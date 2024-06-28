@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] =   "POST") {
 
         echo "Contact added successfully.";
         header("Location:../index.php");
+        exit();
     } catch (PDOException $error) {
         die("Something went wrong! Please try again" . $error->getMessage());
     }

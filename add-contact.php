@@ -19,7 +19,7 @@
             </h1>
         </header>
         <section class="space-y-4 overflow-x-auto">
-            <form action="includes/contact-form-handler.php" method="post" class="flex flex-col gap-3">
+            <form action="includes/add-contact-handler.php" method="post" class="flex flex-col gap-3">
                 <div class="flex flex-col">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" required>

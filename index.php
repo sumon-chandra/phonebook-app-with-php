@@ -50,7 +50,9 @@
                             <td class="px-4 py-2"><?= htmlspecialchars($contact["address"]) ?></td>
                             <td class="px-4 py-2">
                                 <button title="Edit contact" class="text-blue-400 font-semibold px-2 py-1 rounded cursor-pointer transition-colors duration-200">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <a href="update-contact.php?id=<?= htmlspecialchars($contact["id"]) ?>">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
                                 </button>
                                 <button title="Delete contact" class="text-red-400 font-semibold px-2 py-1 rounded cursor-pointer transition-colors duration-200">
                                     <i class="fa-solid fa-trash"></i>
