@@ -1,8 +1,8 @@
 <?php
 
-$dsn = "mysql:host=localhost;dbname=phonebook"; // dsn = Database Server Name
-$db_username = "root";
-$db_password = "";
+$dsn = "mysql:host=sql300.infinityfree.com;dbname=if0_36613634_phonebook"; // dsn = Database Server Name
+$db_username = "if0_36613634";
+$db_password = "kLQvFHHil0";
 
 try {
     $pdo = new PDO($dsn, $db_username, $db_password); // pdo = PHP Data Object
