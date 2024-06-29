@@ -21,10 +21,16 @@
         <section class="space-y-4 overflow-x-auto">
             <div class="flex justify-between items-start mt-10">
                 <h3 class="text-xl font-semibold">Contacts</h3>
-                <div class="border bg-white px-3 py-1 rounded font-semibold flex items-center justify-start gap-3">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search by name" class="w-full focus:outline-none">
-                </div>
+                <!-- Search form -->
+                <?=
+                $value = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
+                ?>
+                <form class="border bg-white px-3 py-1 rounded font-semibold flex items-center justify-start gap-3" method="get" action="index.php">
+                    <input type="text" placeholder="Search by name" value="<?php echo $value ?>" name="search" class="w-full focus:outline-none">
+                    <button type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
                 <button class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">
                     <a href="add-contact.php">+ Add contact</a>
                 </button>
