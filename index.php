@@ -1,3 +1,7 @@
+<?php
+require_once "includes/config-session.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,16 +19,29 @@
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
         </h4>
-        <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-            Login
-        </a>
+        <?php
+        $isLoggedIn = isset($_SESSION["email"]);
+        if ($isLoggedIn) { ?>
+            <div>
+                <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
+            </div>
+            <form action="includes/login/logout.php">
+                <button type="submit" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                    Logout
+                </button>
+            </form>
+        <?php } else { ?>
+            <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                Login
+            </a>
+        <?php } ?>
     </header>
     <main class="lg:w-3/4 lg:p-0 p-3 m-auto">
         <div class="text-center pt-10">
-            <h1 class="flex items-center justify-center gap-4 text-4xl font-bold">
+            <h4 class="flex items-center justify-center gap-4 text-4xl font-bold">
                 <i class="fa-solid fa-address-book"></i>
                 <span>Phone Book App</span>
-            </h1>
+            </h4>
         </div>
         <section class="space-y-4 overflow-x-auto">
             <div class="flex justify-between items-start mt-10">

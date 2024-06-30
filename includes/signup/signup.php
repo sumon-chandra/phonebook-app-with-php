@@ -7,8 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         require_once "../db.php";
-        require_once "../signup/signup-model.php";
-        require_once "../signup/signup-contr.php";
+        require_once "signup-model.php";
+        require_once "signup-contr.php";
 
         // Error handling
         $errors = [];
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdo = null;
         $statement = null;
 
-        header('Location: ../../index.php?signup=success');
+        header('Location: ../../login.php?signup=success');
         die();
     } catch (PDOException $error) {
         die("An error occurred" . $error->getMessage());

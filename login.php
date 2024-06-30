@@ -1,3 +1,7 @@
+<?php
+require_once "includes/config-session.php";
+require_once "includes/login/login-view.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,15 +19,28 @@
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
         </h4>
-        <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-            Login
-        </a>
+        <?php
+        $isLoggedIn = isset($_SESSION["email"]);
+        if ($isLoggedIn) { ?>
+            <div>
+                <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
+            </div>
+            <form action="includes/login/logout.php">
+                <button type="submit" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                    Logout
+                </button>
+            </form>
+        <?php } else { ?>
+            <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                Login
+            </a>
+        <?php } ?>
     </header>
     <main class="flex flex-col items-center justify-center gap-2 mt-20">
         <div>
             <h3 class="text-xl font-bold text-center">Login</h3>
         </div>
-        <form action="" class="bg-white min-w-96 p-6 rounded flex flex-col gap-3">
+        <form action="includes/login/login.php" method="post" class="bg-white min-w-96 p-6 rounded flex flex-col gap-3">
             <div class="flex flex-col gap-1">
                 <label for="email" class="font-semibold">Email:</label>
                 <input type="email" id="email" name="email" required class="border-2 border-neutral-300 focus:outline-none rounded px-2 py-1">
@@ -40,6 +57,11 @@
         <p class="text-sm font-semibold">
             Don't have an account? <a href="signup.php" class="font-bold">Signup here.</a>
         </p>
+    </div>
+    <div class="text-center text-sm font-semibold">
+        <?php
+        checkLoginErrors()
+        ?>
     </div>
 </body>
 
