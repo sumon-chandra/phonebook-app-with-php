@@ -15,19 +15,23 @@ if ($_SERVER["REQUEST_METHOD"] =   "POST") {
     try {
         require_once "db.php";
 
-        // Method 01: Non name parameter
-        $query = "INSERT INTO contacts (name, phone_number, email, address) VALUES (?, ?, ?, ?);";
+        session_start();
+        $user_id = $_SESSION["user_id"];
 
+        // Method 01: Non name parameter
+        $query = "INSERT INTO contacts (name, phone_number, email, address, avatar, user_id) VALUES (?, ?, ?, ?, ?, ?)";
         $statement = $pdo->prepare($query);
-        $statement->execute([$name, $phone, $email, $address]);
+        $statement->execute([$name, $phone, $email, $address, null, $user_id]);
 
         // Method 02: Name parameter
-        // $query = "INSERT INTO contacts (name, phone_number, email, address) VALUES (:name, :phone_number, :email, :address);";
+        // $query = "INSERT INTO contacts (name, phone_number, email, address, avatar, user_id) VALUES (:name, :phone_number, :email, :address, :avatar, :user_id);";
         // $statement = $pdo->prepare($query);
         // $statement->bindParam(":name", $name);
         // $statement->bindParam(":phone_number", $phone);
         // $statement->bindParam(":email", $email);
         // $statement->bindParam(":address", $address);
+        // $statement->bindParam(":avatar", $avatar);
+        // $statement->bindParam(":user_id", $user_id);
 
         // $statement->execute();
 
@@ -35,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] =   "POST") {
         $statement = null;
 
         echo "Contact added successfully.";
-        header("Location:../index.php");
+        header("Location:../contacts.php");
         exit();
     } catch (PDOException $error) {
         die("Something went wrong! Please try again" . $error->getMessage());

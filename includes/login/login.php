@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($errors) {
             // echo "Error";
             $_SESSION["login_error"] = $errors;
-            // header('Location:../../login.php');
+            header('Location:../../login.php');
             die();
         }
 
@@ -56,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdo = null;
         $statement = null;
 
-        header('Location: ../../index.php?login=success');
+        header('Location: ../../contacts.php?login=success');
         die();
     } catch (PDOException $error) {
         die("An error occurred" . $error->getMessage());
     }
 } else {
-    header('Location: ../../index.php');
+    header('Location: ../../contacts.php');
     die();
 }
