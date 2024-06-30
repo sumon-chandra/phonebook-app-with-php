@@ -11,13 +11,13 @@
 </head>
 
 <body class="min-w-full min-h-screen bg-slate-200 text-neutral-700">
-    <header class="flex justify-between items-center lg:p-0 p-3">
-        <h4 class="text-center text-xl font-bold">Phone Book App</h4>
-        <button class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-            <a href="login.php">
-                Login
-            </a>
-        </button>
+    <header class="flex justify-between items-center p-3">
+        <h4 class="text-center text-xl font-bold">
+            <a href="index.php">Phone Book App</a>
+        </h4>
+        <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+            Login
+        </a>
     </header>
     <main class="flex flex-col items-center justify-center gap-2 mt-20">
         <div>
