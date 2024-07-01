@@ -3,3 +3,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+.dialog {
+  padding: 1em;
+  max-width: 50ch;
+  border: 0;
+  box-shadow: 0 0 1em rgb(0 0 0 / 0.3);
+
+  & > * {
+    margin: 0 0 0.5rem 0;
+  }
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.684);
+}

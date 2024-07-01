@@ -2,7 +2,7 @@
 
 // Infinity Free hosting details 
 // $dsn = "mysql:host=sql300.infinityfree.com;dbname=if0_36613634_phonebook"; // dsn = Database Server Name
-// $db_username = "if0_36613634";
+// $db_username = "if0_36613634_XXX";
 // $db_password = "kLQvFHHil0";
 
 // Localhost details

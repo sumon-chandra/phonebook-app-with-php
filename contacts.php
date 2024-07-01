@@ -1,5 +1,6 @@
 <?php
 require_once "includes/config-session.php";
+require_once "./includes/get-contacts.php";
 
 // Check if the user is logged in
 if (!isset($_SESSION["user_id"])) {
@@ -15,6 +16,7 @@ if (!isset($_SESSION["user_id"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/script.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/3930858232.js" crossorigin="anonymous"></script>
     <title>Contacts - Phone book app</title>
@@ -43,28 +45,48 @@ if (!isset($_SESSION["user_id"])) {
         <?php } ?>
     </header>
     <main class="lg:w-3/4 lg:p-0 p-3 m-auto">
+        <?=
+        $name = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '';
+        $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
+        $phone_number = isset($_GET['phone-number']) ? htmlspecialchars($_GET['phone-number']) : '';
+        $address = isset($_GET['address']) ? htmlspecialchars($_GET['address']) : '';
+        ?>
+        <h3 class="text-center py-4 text-lg font-semibold">
+            <i class="fa-solid fa-search"></i>
+            Search contacts
+        </h3>
+        <form class="border bg-white px-3 py-1 rounded font-semibold flex items-center justify-start gap-3" method="get" action="contacts.php" onsubmit="removeEmptyFields(this)">
+            <input type="text" placeholder="Search by name" value="<?php echo $name ?>" name="name" class="w-full border-r-2 focus:outline-none">
+            <input type="email" placeholder="Search by email" value="<?php echo $email ?>" name="email" class="w-full border-r-2 focus:outline-none">
+            <input type="tel" placeholder="Search by phone number" value="<?php echo $phone_number ?>" name="phone-number" class="w-full border-r-2 focus:outline-none">
+            <input type="text" placeholder="Search by address" value="<?php echo $address ?>" name="address" class="w-full border-r-2 focus:outline-none">
+            <?php if ($searchPerformed) : { ?>
+                    <button type="button" onclick="clearForm(this.form)" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                <?php } ?>
+                <?php else : { ?>
+                    <button type="submit" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">
+                        <i class=" fa-solid fa-magnifying-glass"></i>
+                    </button>
+            <?php }
+            endif; ?>
+        </form>
         <div class="text-center pt-10">
             <h4 class="flex items-center justify-center gap-4 text-4xl font-bold">
                 <i class="fa-solid fa-address-book"></i>
-                <span>Phone Book App</span>
+                <span>Your contact list</span>
             </h4>
         </div>
         <section class="space-y-4 overflow-x-auto">
             <div class="flex justify-between items-start mt-10">
                 <h3 class="text-xl font-semibold">Contacts</h3>
                 <!-- Search form -->
-                <?=
-                $value = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
-                ?>
-                <form class="border bg-white px-3 py-1 rounded font-semibold flex items-center justify-start gap-3" method="get" action="index.php">
-                    <input type="text" placeholder="Search by name" value="<?php echo $value ?>" name="search" class="w-full focus:outline-none">
-                    <button type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                <div class="flex gap-3">
+                    <button class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">
+                        <a href="add-contact.php">+ Add contact</a>
                     </button>
-                </form>
-                <button class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">
-                    <a href="add-contact.php">+ Add contact</a>
-                </button>
+                </div>
 
             </div>
             <table class="table-auto w-full overflow-x-scroll">
@@ -73,12 +95,13 @@ if (!isset($_SESSION["user_id"])) {
                         <th class="text-start px-4 py-2">Name</th>
                         <th class="text-start px-4 py-2">Phone</th>
                         <th class="text-start px-4 py-2">Email</th>
-                        <th class="text-start px-4 py-2">Actions</th>
+                        <th class="text-start px-4 py-2">Address</th>
+                        <th class="text-start px-4 py-2">Action</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
                     <?php
-                    require_once "./includes/get-contacts.php";
+
                     if (empty($data)) {
                         echo "<tr><td colspan='5' class='text-center text-lg font-semibold py-4'>No contacts found</td></tr>";
                     } else {
