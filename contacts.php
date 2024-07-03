@@ -66,7 +66,7 @@ if (!isset($_SESSION["user_id"])) {
                     </button>
                 <?php } ?>
                 <?php else : { ?>
-                    <button type="submit" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200">
                         <i class=" fa-solid fa-magnifying-glass"></i>
                     </button>
             <?php }
@@ -83,9 +83,9 @@ if (!isset($_SESSION["user_id"])) {
                 <h3 class="text-xl font-semibold">Contacts</h3>
                 <!-- Search form -->
                 <div class="flex gap-3">
-                    <button class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">
-                        <a href="add-contact.php">+ Add contact</a>
-                    </button>
+                    <a href="add-contact.php" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200">
+                        + Add contact
+                    </a>
                 </div>
 
             </div>

@@ -6,6 +6,9 @@ if ($_SERVER["REQUEST_METHOD"] =   "POST") {
     $phone = $_POST["phone"];
     $email = $_POST["email"];
     $address = $_POST["address"];
+    $age = $_POST["age"];
+    $profession = $_POST["profession"];
+    $gender = $_POST["gender"];
 
     // Validate form data
     if (empty($name) || empty($phone) || empty($email)) {
@@ -19,9 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] =   "POST") {
         $user_id = $_SESSION["user_id"];
 
         // Method 01: Non name parameter
-        $query = "INSERT INTO contacts (name, phone_number, email, address, avatar, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO contacts (name, phone_number, email, address, avatar, user_id, age, profession, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $statement = $pdo->prepare($query);
-        $statement->execute([$name, $phone, $email, $address, null, $user_id]);
+        $statement->execute([$name, $phone, $email, $address, null, $user_id, $age, $profession, $gender]);
 
         // Method 02: Name parameter
         // $query = "INSERT INTO contacts (name, phone_number, email, address, avatar, user_id) VALUES (:name, :phone_number, :email, :address, :avatar, :user_id);";
@@ -31,6 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] =   "POST") {
         // $statement->bindParam(":email", $email);
         // $statement->bindParam(":address", $address);
         // $statement->bindParam(":avatar", $avatar);
+        // $statement->bindParam(":age", $age);
+        // $statement->bindParam(":profession", $profession);
+        // $statement->bindParam(":gender", $gender);
         // $statement->bindParam(":user_id", $user_id);
 
         // $statement->execute();

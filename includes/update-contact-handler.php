@@ -6,8 +6,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $address = $_POST["address"];
     $contactId = $_POST["id"];
-
-    // echo $contactId;
+    $age = $_POST["age"];
+    $profession = $_POST["profession"];
+    $gender = $_POST["gender"];
 
     // Validate form data
     if (empty($name) || empty($phone) || empty($email)) {
@@ -18,19 +19,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         require_once "db.php";
 
-        $query = "UPDATE contacts SET name = :name, phone_number = :phone_number, email = :email, address = :address WHERE id = :id;";
+        $query = "UPDATE contacts SET name = :name, phone_number = :phone_number, email = :email, address = :address, age = :age, gender = :gender, profession = :profession WHERE id = :id;";
         $statement = $pdo->prepare($query);
         $statement->bindParam(":name", $name);
         $statement->bindParam(":phone_number", $phone);
         $statement->bindParam(":email", $email);
         $statement->bindParam(":address", $address);
+        $statement->bindParam(":age", $age);
+        $statement->bindParam(":gender", $gender);
+        $statement->bindParam(":profession", $profession);
         $statement->bindParam(":id", $contactId, PDO::PARAM_INT);
         $statement->execute();
 
         $pdo = null;
         $statement = null;
 
-        header("Location: ../index.php");
+        header("Location: ../contacts.php");
     } catch (PDOException $error) {
         die("Something went wrong! Please try again" . $error->getMessage());
     }

@@ -18,6 +18,10 @@ try {
     $phone = htmlspecialchars($contact["phone_number"]);
     $email = htmlspecialchars($contact["email"]);
     $address = htmlspecialchars($contact["address"]);
+    $age = htmlspecialchars($contact["age"]);
+    $gender = htmlspecialchars($contact["gender"]);
+    $avatar = htmlspecialchars($contact["avatar"]);
+    $profession = htmlspecialchars($contact["profession"]);
 } catch (PDOException $error) {
     die("Something went wrong! Please try again" . $error->getMessage());
 }
@@ -45,26 +49,54 @@ try {
             </h1>
         </header>
         <section class="space-y-4 overflow-x-auto">
-            <form action="includes/update-contact-handler.php" method="post" class="flex flex-col gap-3">
+            <form action="includes/update-contact-handler.php" method="post" class="flex flex-col gap-3 p-6 rounded-sm mt-10 bg-slate-100">
                 <input type="hidden" name="id" value="<?= $contactId ?>">
-                <div class="flex flex-col">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="<?= $name ?>">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div class="flex flex-col col-span-1">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" value="<?= $name ?>" autofocus placeholder="Enter name" class="p-2 focus:outline-none border rounded">
+                    </div>
+                    <div class="flex flex-col col-span-1">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" value="<?= $phone ?>" placeholder="Enter phone number" class="p-2 focus:outline-none border rounded">
+                    </div>
+                    <div class="flex flex-col col-span-1">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="<?= $email ?>" placeholder="Enter email" class="p-2 focus:outline-none border rounded">
+                    </div>
+                    <div class="flex flex-col col-span-1">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" value="<?= $age ?>" placeholder="Enter age" class="p-2 focus:outline-none border rounded">
+                    </div>
+                    <div class="flex flex-col col-span-1 md:col-span-2">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" value="<?= $address ?>" placeholder="Enter name" class="p-2 focus:outline-none border rounded">
+                    </div>
+                    <div class="flex flex-col col-span-1">
+                        <label for="gender" class="font-semibold text-lg">Gender:</label>
+                        <select name="gender" id="gender" class="p-2 focus:outline-none border rounded" class="p-2 focus:outline-none border rounded">
+                            <option value="">Select gender</option>
+                            <option value="male" <?php echo ($age == 'male') ? 'selected' : ''; ?>>Male</option>
+                            <option value="female" <?php echo ($age == 'female') ? 'selected' : ''; ?>>Female</option>
+                            <option value="other" <?php echo ($age == 'other') ? 'selected' : ''; ?>>Other</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col col-span-1">
+                        <label for="profession" class="font-semibold text-lg">Profession:</label>
+                        <select name="profession" id="profession" class="p-2 focus:outline-none border rounded">
+                            <option value="">Select profession</option>
+                            <option value="student" <?php echo ($profession == 'student') ? 'selected' : ''; ?>>Student</option>
+                            <option value="teacher" <?php echo ($profession == 'teacher') ? 'selected' : ''; ?>>Teacher</option>
+                            <option value="engineer" <?php echo ($profession == 'engineer') ? 'selected' : ''; ?>>Engineer</option>
+                            <option value="other" <?php echo ($profession == 'other') ? 'selected' : ''; ?>>Other</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="flex flex-col">
-                    <label for="phone">Phone:</label>
-                    <input type="tel" id="phone" name="phone" value="<?= $phone ?>">
-                </div>
-                <div class="flex flex-col">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="<?= $email ?>">
-                </div>
-                <div class="flex flex-col">
-                    <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" value="<?= $address ?>">
-                </div>
-                <div class="flex justify-end">
+                <div class="flex gap-3 justify-end">
                     <button type="submit" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">Update Contact</button>
+                    <a href="contacts.php" class=" text-slate-200 bg-neutral-700 font-semibold px-4 py-1 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Cancel</a>
                 </div>
             </form>
             </form>
