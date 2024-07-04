@@ -12,10 +12,33 @@ if (!isset($_SESSION["user_id"])) {
 if (isset($_GET["id"])) {
     try {
         $id = $_GET['id'];
+
+        // Get the contact
         $query = "SELECT * FROM contacts WHERE id = $id";
         $statement = $pdo->prepare($query);
         $statement->execute();
         $contact = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Get professions
+        $query = "SELECT * FROM professions WHERE contact_id = :contact_id";
+        $statement = $pdo->prepare($query);
+        $statement->bindParam(":contact_id", $contact["id"]);
+        $statement->execute();
+        $profession = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Get genders
+        $query = "SELECT * FROM genders WHERE contact_id = :contact_id";
+        $statement = $pdo->prepare($query);
+        $statement->bindParam(":contact_id", $contact["id"]);
+        $statement->execute();
+        $gender = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Get blood groups
+        $query = "SELECT * FROM blood_groups WHERE contact_id = :contact_id";
+        $statement = $pdo->prepare($query);
+        $statement->bindParam(":contact_id", $contact["id"]);
+        $statement->execute();
+        $blood_group = $statement->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $error) {
         header("Location: contacts.php");
         die("Failed to load contact" . $error->getMessage());
@@ -29,8 +52,9 @@ $name = htmlspecialchars($contact["name"]);
 $email = htmlspecialchars($contact["email"]);
 $phone_number = htmlspecialchars($contact["phone_number"]);
 $age = htmlspecialchars($contact["age"]);
-$profession = htmlspecialchars($contact["profession"]);
-$gender = htmlspecialchars($contact["gender"]);
+$profession = htmlspecialchars($profession["profession"]);
+$gender = htmlspecialchars($gender["gender"]);
+$bloodGroup = htmlspecialchars($blood_group["blood_group"]);
 $avatar = htmlspecialchars($contact["avatar"]);
 $id = $contact["id"];
 
@@ -95,6 +119,7 @@ $id = $contact["id"];
                     <p>Age: <?= $age ? $age . "Years old" : "N/A" ?></p>
                     <p>Profession: <?= $profession ?  ucfirst($profession) : "N/A" ?></p>
                     <p>Gender: <?= $gender ?  ucfirst($gender) : "N/A" ?></p>
+                    <p>Blood Group: <?= $bloodGroup ?  $bloodGroup : "N/A" ?></p>
                 </div>
                 <div class="flex justify-center gap-2 mt-8">
                     <a href="update-contact.php?id=<?= $id ?>" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Edit</a>

@@ -1,9 +1,9 @@
 <?php
-require_once "db.php";
 
 $searchPerformed = false;
 
 try {
+    require_once "./includes/db.php";
     $name = isset($_GET['name']) ? $_GET['name'] : '';
     $email = isset($_GET['email']) ? $_GET['email'] : '';
     $phone_number = isset($_GET['phone-number']) ? $_GET['phone-number'] : '';

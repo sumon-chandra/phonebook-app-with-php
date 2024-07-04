@@ -56,7 +56,7 @@ if (!isset($_SESSION["user_id"])) {
             </h1>
         </div>
         <section class="space-y-4 overflow-x-auto">
-            <form action="includes/add-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-white">
+            <form action="includes/contacts/add-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-white">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col col-span-1">
                         <label for="name" class="font-semibold text-lg">Name:</label>
@@ -98,8 +98,8 @@ if (!isset($_SESSION["user_id"])) {
                         </select>
                     </div>
                     <div class="flex flex-col col-span-1">
-                        <label for="blood-group" class="font-semibold text-lg">Blood Group</label>
-                        <select name="blood-group" id="blood-group" class="p-2 focus:outline-none border rounded">
+                        <label for="blood_group" class="font-semibold text-lg">Blood Group</label>
+                        <select name="blood_group" id="blood_group" class="p-2 focus:outline-none border rounded">
                             <option value="">Select blood group</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>

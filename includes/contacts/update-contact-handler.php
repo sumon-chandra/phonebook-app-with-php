@@ -17,8 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Update contact in the database
     try {
-        require_once "db.php";
-
+        require_once "./includes/db.php";
         $query = "UPDATE contacts SET name = :name, phone_number = :phone_number, email = :email, address = :address, age = :age, gender = :gender, profession = :profession WHERE id = :id;";
         $statement = $pdo->prepare($query);
         $statement->bindParam(":name", $name);
@@ -34,10 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo = null;
         $statement = null;
 
-        header("Location: ../contacts.php");
+        header("Location: ../../contacts.php");
     } catch (PDOException $error) {
         die("Something went wrong! Please try again" . $error->getMessage());
     }
 } else {
-    header("Location: ../index.php");
+    header("Location: ../../contacts.php");
 }
