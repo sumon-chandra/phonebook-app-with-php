@@ -38,17 +38,17 @@ try {
     }
     if ($age) {
         $conditions[] = "age = :age";
-        $parameters[":age"] = "%" . $age . "%";
+        $parameters[":age"] = $age;
         $searchPerformed = true;
     }
     if ($gender) {
         $conditions[] = "gender = :gender";
-        $parameters[":gender"] = "%" . $gender . "%";
+        $parameters[":gender"] = $gender;
         $searchPerformed = true;
     }
     if ($profession) {
         $conditions[] = "profession = :profession";
-        $parameters[":profession"] = "%" . $profession . "%";
+        $parameters[":profession"] = $profession;
         $searchPerformed = true;
     }
 

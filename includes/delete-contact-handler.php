@@ -8,8 +8,8 @@ try {
     $statement = $pdo->prepare($query);
     $statement->bindParam(":id", $contactId);
     $statement->execute();
-    header("Location: ../index.php");
+    header("Location: ../contacts.php");
 } catch (PDOException $error) {
     die("Something went wrong! Please try again" . $error->getMessage());
-    header("Location: ../index.php");
+    header("Location: ../contacts.php");
 }

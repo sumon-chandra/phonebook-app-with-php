@@ -112,9 +112,9 @@ try {
                         <label for="gender" class="font-semibold text-lg">Gender:</label>
                         <select name="gender" id="gender" class="p-2 focus:outline-none border rounded" class="p-2 focus:outline-none border rounded">
                             <option value="">Select gender</option>
-                            <option value="male" <?php echo ($age == 'male') ? 'selected' : ''; ?>>Male</option>
-                            <option value="female" <?php echo ($age == 'female') ? 'selected' : ''; ?>>Female</option>
-                            <option value="other" <?php echo ($age == 'other') ? 'selected' : ''; ?>>Other</option>
+                            <option value="male" <?php echo ($gender == 'male') ? 'selected' : ''; ?>>Male</option>
+                            <option value="female" <?php echo ($gender == 'female') ? 'selected' : ''; ?>>Female</option>
+                            <option value="other" <?php echo ($gender == 'other') ? 'selected' : ''; ?>>Other</option>
                         </select>
                     </div>
                     <div class="flex flex-col col-span-1">
