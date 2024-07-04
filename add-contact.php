@@ -74,7 +74,7 @@ if (!isset($_SESSION["user_id"])) {
                         <label for="age" class="font-semibold text-lg">Age:</label>
                         <input type="number" id="age" name="age" placeholder="Enter age" class="p-2 focus:outline-none border rounded">
                     </div>
-                    <div class="flex flex-col md:col-span-2">
+                    <div class="flex flex-col col-span-1">
                         <label for="address" class="font-semibold text-lg">Address:</label>
                         <input type="text" id="address" name="address" placeholder="Enter address" class="p-2 focus:outline-none border rounded">
                     </div>
@@ -97,9 +97,23 @@ if (!isset($_SESSION["user_id"])) {
                             <option value="other">Other</option>
                         </select>
                     </div>
+                    <div class="flex flex-col col-span-1">
+                        <label for="blood-group" class="font-semibold text-lg">Blood Group</label>
+                        <select name="blood-group" id="blood-group" class="p-2 focus:outline-none border rounded">
+                            <option value="">Select blood group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="flex gap-3 justify-end">
-                    <button type="submit" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">Add Contact</button>
+                    <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200">Add Contact</button>
                     <a href="contacts.php" class=" text-slate-200 bg-neutral-700 font-semibold px-4 py-1 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Cancel</a>
                 </div>
             </form>

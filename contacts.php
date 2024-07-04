@@ -143,7 +143,7 @@ if (!isset($_SESSION["user_id"])) {
                                         </a>
                                     </button>
                                     <button title="Delete contact" class="text-red-400 font-semibold px-2 py-1 rounded cursor-pointer transition-colors duration-200">
-                                        <a href="includes/delete-contact-handler.php?id=<?= $contact["id"] ?>" onclick="return confirm('Are you sure you want to delete this contact?');">
+                                        <a href="includes/contacts/delete-contact-handler.php?id=<?= $contact["id"] ?>" onclick="return confirm('Are you sure you want to delete this contact?');">
                                             <i class="fa-solid fa-trash"></i>
                                         </a>
                                     </button>

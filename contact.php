@@ -1,7 +1,7 @@
 <?php
 require_once "includes/db.php";
 require_once "includes/config-session.php";
-// require_once "./includes/get-contact.php";
+// require_once "./includes/contacts/get-contact.php";
 
 // Check if the user is logged in
 if (!isset($_SESSION["user_id"])) {

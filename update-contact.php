@@ -83,7 +83,7 @@ try {
             </h1>
         </div>
         <section class="space-y-4 overflow-x-auto">
-            <form action="includes/update-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-slate-100">
+            <form action="includes/contacts/update-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-slate-100">
                 <input type="hidden" name="id" value="<?= $contactId ?>">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

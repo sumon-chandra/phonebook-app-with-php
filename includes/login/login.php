@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         require_once "../db.php";
         require_once "login-model.php";
         require_once "login-contr.php";
-        require_once "../config-session.php";
+        // require_once "../config-session.php";
 
         // Error handling
         $errors = [];
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = getUser($pdo, $email);
 
         if (!$user) {
-            // echo "User not found";
+            echo "User not found";
             $errors["invalid_user"] = "User not found!";
         } else {
             // echo "User: " . $user["pwd"];
@@ -32,16 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
+        $newSessionId = session_create_id();
+        $sessionId = $newSessionId . "_" . $user["id"];
+        session_id($sessionId);
+
+        require_once "../config-session.php";
 
         if ($errors) {
             $_SESSION["login_error"] = $errors;
             header('Location:../../login.php');
             die();
         }
-
-        $newSessionId = session_create_id();
-        $sessionId = $newSessionId . "_" . $user["id"];
-        session_id($sessionId);
 
         // Login the user
         $_SESSION["user_id"] = $user["id"];
