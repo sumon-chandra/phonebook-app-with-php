@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         require_once "../db.php";
         require_once "login-model.php";
         require_once "login-contr.php";
+        require_once "../config-session.php";
 
         // Error handling
         $errors = [];
@@ -22,18 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // echo "User not found";
             $errors["invalid_user"] = "User not found!";
         } else {
+            // echo "User: " . $user["pwd"];
             if (isEmailWrong($user)) {
                 $errors["invalid_email"] = "Invalid Email!";
             }
-            if (!isPwdWrong($pwd, $user["pwd"])) {
+            if (isPwdWrong($user['pwd'], $pwd)) {
                 $errors["invalid_password"] = "Invalid password!";
             }
         }
 
-        require_once "../config-session.php";
 
         if ($errors) {
-            // echo "Error";
             $_SESSION["login_error"] = $errors;
             header('Location:../../login.php');
             die();

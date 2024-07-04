@@ -34,14 +34,18 @@ require_once "includes/login/login-view.php";
     </main>
     <div class="text-center mt-3">
         <p class="text-sm font-semibold">
+            Don't have an account? <a href="signup.php" class="font-bold">Signup here.</a>
+        </p>
         <p class="text-sm font-semibold">
             <a href="index.php" class="font-bold">Go to home page.</a>
-        </p>
         </p>
     </div>
     <div class="text-center text-sm font-semibold">
         <?php
-        checkLoginErrors()
+        checkLoginErrors();
+        if (isset($_SESSION["login_error"])) {
+            unset($_SESSION["login_error"]);
+        }
         ?>
     </div>
 </body>

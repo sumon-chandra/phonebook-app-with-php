@@ -15,14 +15,10 @@ function getEmail(object $pdo, string $email)
 
 function createUser(object $pdo, string $name, string $email, string $pwd)
 {
-    $options = [
-        'cost' => 12, // Bcrypt algorithm level, higher the value, more secure the password
-    ];
-    $hashedPwd = password_hash($pwd, PASSWORD_BCRYPT, $options);
     $query = "INSERT INTO users (name, email, pwd) VALUES (:name, :email, :pwd);";
     $statement = $pdo->prepare($query);
     $statement->bindParam(":name", $name);
     $statement->bindParam(":email", $email);
-    $statement->bindParam(":pwd", $hashedPwd);
+    $statement->bindParam(":pwd", $pwd);
     $statement->execute();
 }
