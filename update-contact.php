@@ -12,10 +12,31 @@ if (!isset($_SESSION["user_id"])) {
 $contactId = $_GET["id"];
 
 try {
+    // Get contact
     $query = "SELECT * FROM contacts WHERE id = $contactId;";
     $statement = $pdo->prepare($query);
     $statement->execute();
     $contact = $statement->fetch(PDO::FETCH_ASSOC);
+
+    $contactDBId = $contact["id"];
+
+    // Get profession
+    $query = "SELECT * FROM professions WHERE contact_id = $contactDBId;";
+    $statement = $pdo->prepare($query);
+    $statement->execute();
+    $profession = $statement->fetch(PDO::FETCH_ASSOC);
+
+    // Get gender
+    $query = "SELECT * FROM genders WHERE contact_id = $contactDBId;";
+    $statement = $pdo->prepare($query);
+    $statement->execute();
+    $gender = $statement->fetch(PDO::FETCH_ASSOC);
+
+    // Get blood group
+    $query = "SELECT * FROM blood_groups WHERE contact_id = $contactDBId;";
+    $statement = $pdo->prepare($query);
+    $statement->execute();
+    $bloodGroup = $statement->fetch(PDO::FETCH_ASSOC);
 
     if (!$contact) {
         die("Contact not found.");
@@ -24,11 +45,12 @@ try {
     $name = htmlspecialchars($contact["name"]);
     $phone = htmlspecialchars($contact["phone_number"]);
     $email = htmlspecialchars($contact["email"]);
-    $address = htmlspecialchars($contact["address"]);
-    $age = htmlspecialchars($contact["age"]);
-    $gender = htmlspecialchars($contact["gender"]);
-    $avatar = htmlspecialchars($contact["avatar"]);
-    $profession = htmlspecialchars($contact["profession"]);
+    $address = isset($contact["address"]) && htmlspecialchars($contact["address"]);
+    $age = isset($contact["age"]) && htmlspecialchars($contact["age"]);
+    $avatar = isset($contact["avatar"]) && htmlspecialchars($contact["avatar"]);
+    $professionName = isset($profession["profession"]) && htmlspecialchars($profession["profession"]);
+    $genderName = isset($gender["gender"]) && htmlspecialchars($gender["gender"]);
+    $bloodGroupName = isset($bloodGroup["blood_group"]) && htmlspecialchars($bloodGroup["blood_group"]);
 } catch (PDOException $error) {
     die("Something went wrong! Please try again" . $error->getMessage());
 }
@@ -104,7 +126,7 @@ try {
                         <label for="age">Age:</label>
                         <input type="number" id="age" name="age" value="<?= $age ?>" placeholder="Enter age" class="p-2 focus:outline-none border rounded">
                     </div>
-                    <div class="flex flex-col col-span-1 md:col-span-2">
+                    <div class="flex flex-col col-span-1">
                         <label for="address">Address:</label>
                         <input type="text" id="address" name="address" value="<?= $address ?>" placeholder="Enter name" class="p-2 focus:outline-none border rounded">
                     </div>
@@ -112,19 +134,33 @@ try {
                         <label for="gender" class="font-semibold text-lg">Gender:</label>
                         <select name="gender" id="gender" class="p-2 focus:outline-none border rounded" class="p-2 focus:outline-none border rounded">
                             <option value="">Select gender</option>
-                            <option value="male" <?php echo ($gender == 'male') ? 'selected' : ''; ?>>Male</option>
-                            <option value="female" <?php echo ($gender == 'female') ? 'selected' : ''; ?>>Female</option>
-                            <option value="other" <?php echo ($gender == 'other') ? 'selected' : ''; ?>>Other</option>
+                            <option value="male" <?php echo ($genderName == 'male') ? 'selected' : ''; ?>>Male</option>
+                            <option value="female" <?php echo ($genderName == 'female') ? 'selected' : ''; ?>>Female</option>
+                            <option value="other" <?php echo ($genderName == 'other') ? 'selected' : ''; ?>>Other</option>
                         </select>
                     </div>
                     <div class="flex flex-col col-span-1">
                         <label for="profession" class="font-semibold text-lg">Profession:</label>
                         <select name="profession" id="profession" class="p-2 focus:outline-none border rounded">
                             <option value="">Select profession</option>
-                            <option value="student" <?php echo ($profession == 'student') ? 'selected' : ''; ?>>Student</option>
-                            <option value="teacher" <?php echo ($profession == 'teacher') ? 'selected' : ''; ?>>Teacher</option>
-                            <option value="engineer" <?php echo ($profession == 'engineer') ? 'selected' : ''; ?>>Engineer</option>
-                            <option value="other" <?php echo ($profession == 'other') ? 'selected' : ''; ?>>Other</option>
+                            <option value="student" <?php echo ($professionName == 'student') ? 'selected' : ''; ?>>Student</option>
+                            <option value="teacher" <?php echo ($professionName == 'teacher') ? 'selected' : ''; ?>>Teacher</option>
+                            <option value="engineer" <?php echo ($professionName == 'engineer') ? 'selected' : ''; ?>>Engineer</option>
+                            <option value="other" <?php echo ($professionName == 'other') ? 'selected' : ''; ?>>Other</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col col-span-1">
+                        <label for="blood_group" class="font-semibold text-lg">Blood Group</label>
+                        <select name="blood_group" id="blood_group" class="p-2 focus:outline-none border rounded">
+                            <option value="">Select blood group</option>
+                            <option value="A+" <?php echo ($bloodGroupName == 'A+') ? "selected" : "" ?>>A+</option>
+                            <option value="A-" <?php echo ($bloodGroupName == 'A-') ? "selected" : "" ?>>A-</option>
+                            <option value="B+" <?php echo ($bloodGroupName == 'B+') ? "selected" : "" ?>>B+</option>
+                            <option value="B-" <?php echo ($bloodGroupName == 'B-') ? "selected" : "" ?>>B-</option>
+                            <option value="AB+" <?php echo ($bloodGroupName == 'AB+') ? "selected" : "" ?>>AB+</option>
+                            <option value="AB-" <?php echo ($bloodGroupName == 'AB-') ? "selected" : "" ?>>AB-</option>
+                            <option value="O+" <?php echo ($bloodGroupName == 'O+') ? "selected" : "" ?>>O+</option>
+                            <option value="O-" <?php echo ($bloodGroupName == 'O-') ? "selected" : "" ?>>O-</option>
                         </select>
                     </div>
                 </div>
