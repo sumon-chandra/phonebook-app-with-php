@@ -17,19 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $user = getUser($pdo, $email);
-        // getUser($pdo, $email);
-        // echo "Email: " . $user["email"];
-        echo "Password: " . $user["pwd"];
 
         if (!$user) {
             // echo "User not found";
-            $errors["invalid_login"] = "User not found!";
-        }
-        if (isEmailWrong($user)) {
-            $errors["invalid_login"] = "Invalid Email!";
-        }
-        if (isPwdWrong($pwd, $user["pwd"])) {
-            $errors["invalid_login"] = "Invalid password!";
+            $errors["invalid_user"] = "User not found!";
+        } else {
+            if (isEmailWrong($user)) {
+                $errors["invalid_email"] = "Invalid Email!";
+            }
+            if (!isPwdWrong($pwd, $user["pwd"])) {
+                $errors["invalid_password"] = "Invalid password!";
+            }
         }
 
         require_once "../config-session.php";

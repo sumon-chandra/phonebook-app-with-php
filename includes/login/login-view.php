@@ -5,7 +5,6 @@ declare(strict_types=1);
 function checkLoginErrors()
 {
     if (isset($_SESSION["login_error"])) {
-
         $errors = $_SESSION["login_error"];
         echo "<br/>";
         foreach ($errors as $error) {
