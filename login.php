@@ -15,27 +15,6 @@ require_once "includes/login/login-view.php";
 </head>
 
 <body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
-    <header class="flex justify-between items-center p-3">
-        <h4 class="text-center text-xl font-bold">
-            <a href="index.php">Phone Book App</a>
-        </h4>
-        <?php
-        $isLoggedIn = isset($_SESSION["email"]);
-        if ($isLoggedIn) { ?>
-            <div>
-                <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
-            </div>
-            <form action="includes/login/logout.php">
-                <button type="submit" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-                    Logout
-                </button>
-            </form>
-        <?php } else { ?>
-            <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-                Login
-            </a>
-        <?php } ?>
-    </header>
     <main class="flex flex-col items-center justify-center gap-2 mt-20">
         <div>
             <h3 class="text-xl font-bold text-center">Login</h3>
@@ -55,7 +34,9 @@ require_once "includes/login/login-view.php";
     </main>
     <div class="text-center mt-3">
         <p class="text-sm font-semibold">
-            Don't have an account? <a href="signup.php" class="font-bold">Signup here.</a>
+        <p class="text-sm font-semibold">
+            <a href="index.php" class="font-bold">Go to home page.</a>
+        </p>
         </p>
     </div>
     <div class="text-center text-sm font-semibold">

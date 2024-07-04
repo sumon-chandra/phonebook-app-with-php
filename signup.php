@@ -16,14 +16,6 @@ require_once "./includes/signup/signup-view.php"
 </head>
 
 <body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
-    <header class="flex justify-between items-center p-3">
-        <h4 class="text-center text-xl font-bold">
-            <a href="index.php">Phone Book App</a>
-        </h4>
-        <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-            Login
-        </a>
-    </header>
     <main class="flex flex-col items-center justify-center gap-2 mt-20">
         <div>
             <h3 class="text-xl font-bold text-center">Signup</h3>
@@ -48,6 +40,9 @@ require_once "./includes/signup/signup-view.php"
     <div class="text-center mt-3">
         <p class="text-sm font-semibold">
             Already have an account? <a href="login.php" class="font-bold">Login here.</a>
+        </p>
+        <p class="text-sm font-semibold">
+            <a href="index.php" class="font-bold">Go to home page.</a>
         </p>
     </div>
     <div class="text-center text-sm font-semibold">
