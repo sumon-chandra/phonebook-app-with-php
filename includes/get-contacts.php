@@ -8,6 +8,9 @@ try {
     $email = isset($_GET['email']) ? $_GET['email'] : '';
     $phone_number = isset($_GET['phone-number']) ? $_GET['phone-number'] : '';
     $address = isset($_GET['address']) ? $_GET['address'] : '';
+    $age = isset($_GET['age']) ? $_GET['age'] : '';
+    $gender = isset($_GET['gender']) ? $_GET['gender'] : '';
+    $profession = isset($_GET['profession']) ? $_GET['profession'] : '';
 
     // Conditions and parameters
     $query = "SELECT * FROM contacts";
@@ -31,6 +34,21 @@ try {
     if ($address) {
         $conditions[] = "address LIKE :address";
         $parameters[":address"] = "%" . $address . "%";
+        $searchPerformed = true;
+    }
+    if ($age) {
+        $conditions[] = "age = :age";
+        $parameters[":age"] = $age;
+        $searchPerformed = true;
+    }
+    if ($gender) {
+        $conditions[] = "gender = :gender";
+        $parameters[":gender"] = $gender;
+        $searchPerformed = true;
+    }
+    if ($profession) {
+        $conditions[] = "profession = :profession";
+        $parameters[":profession"] = $profession;
         $searchPerformed = true;
     }
 

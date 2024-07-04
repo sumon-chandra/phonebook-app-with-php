@@ -1,3 +1,13 @@
+<?php
+require_once "includes/config-session.php";
+
+// Check if the user is logged in
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    die();
+};
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,16 +20,43 @@
     <title>Add contact - Phonebook</title>
 </head>
 
-<body class="min-w-full min-h-screen bg-slate-200 text-neutral-700">
-    <main class="lg:w-1/2 lg:p-0 p-3 m-auto">
-        <header class="text-center pt-10">
+<body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
+    <header class="flex justify-between items-center p-3">
+        <h4 class="text-center text-xl font-bold">
+            <a href="index.php">Phone Book App</a>
+        </h4>
+        <?php
+        $isLoggedIn = isset($_SESSION["email"]);
+        if ($isLoggedIn) { ?>
+            <div>
+                <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
+            </div>
+            <form action="includes/login/logout.php">
+                <button type="submit" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                    Logout
+                </button>
+            </form>
+        <?php } else { ?>
+            <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                Login
+            </a>
+        <?php } ?>
+    </header>
+    <main class="lg:w-3/4 lg:p-0 p-3 mx-auto">
+        <div>
+            <a href="contacts.php" class="font-semibold">
+                <i class="fas fa-arrow-left"></i>
+                Back to Contacts List
+            </a>
+        </div>
+        <div class="text-center pt-10">
             <h1 class="flex items-center justify-center gap-4 text-4xl font-bold">
                 <i class="fa-solid fa-address-book"></i>
                 <span>Add contact</span>
             </h1>
-        </header>
+        </div>
         <section class="space-y-4 overflow-x-auto">
-            <form action="includes/add-contact-handler.php" method="post" class="flex flex-col gap-3 p-6 rounded-sm mt-10 bg-slate-100">
+            <form action="includes/add-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-slate-100">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col col-span-1">
                         <label for="name" class="font-semibold text-lg">Name:</label>

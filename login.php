@@ -14,7 +14,7 @@ require_once "includes/login/login-view.php";
     <title>Login - Phone book app</title>
 </head>
 
-<body class="min-w-full min-h-screen bg-slate-200 text-neutral-700">
+<body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
     <header class="flex justify-between items-center p-3">
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
