@@ -15,6 +15,13 @@ session_set_cookie_params([
 
 session_start();
 
+$url = basename($_SERVER['PHP_SELF']);
+$query = $_SERVER['QUERY_STRING'];
+if ($query) {
+    $url .= "?" . $query;
+}
+$_SESSION['current_page'] = $url;
+
 if (isset($_SESSION["user_id"])) {
     if (!isset($_SESSION["last_regeneration_time"])) {
         regenerate_session_id_loggedIn();

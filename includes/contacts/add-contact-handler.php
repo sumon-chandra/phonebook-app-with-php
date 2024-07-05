@@ -10,10 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {  // Corrected the equality operator
     $profession = $_POST["profession"];
     $gender = $_POST["gender"];
     $blood_group = $_POST["blood_group"];
+    $avatar = null;
+    $dob = $_POST["dob"];
 
     // Validate form data
-    if (empty($name) || empty($phone) || empty($email)) {
-        die("Name, phone, and email are required.");
+    if (empty($name) || empty($phone) || empty($email) || empty($dob)) {
+        die("Name, phone, email and date of birth are required.");
     }
 
     try {
@@ -23,18 +25,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {  // Corrected the equality operator
         $user_id = $_SESSION["user_id"];
 
         // Insert into contacts table
-        $query = "INSERT INTO contacts (name, phone_number, email, address, avatar, age, user_id) VALUES (:name, :phone_number, :email, :address, :avatar, :age, :user_id);";
+        $query = "INSERT INTO contacts (name, phone_number, email, address, avatar, age, dob, user_id) VALUES (:name, :phone_number, :email, :address, :avatar, :age, :dob, :user_id);";
         $statement = $pdo->prepare($query);
         $statement->bindParam(":name", $name);
         $statement->bindParam(":phone_number", $phone);
         $statement->bindParam(":email", $email);
         $statement->bindParam(":address", $address);
-
-        // Assuming avatar is not being uploaded, setting it to null
-        $avatar = null;
         $statement->bindParam(":avatar", $avatar);
-
         $statement->bindParam(":age", $age);
+        $statement->bindParam(":dob", $dob);
         $statement->bindParam(":user_id", $user_id);
         $statement->execute();
 

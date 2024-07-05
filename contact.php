@@ -48,14 +48,15 @@ if (isset($_GET["id"])) {
     die();
 }
 
-$name = htmlspecialchars($contact["name"]);
-$email = htmlspecialchars($contact["email"]);
-$phone_number = htmlspecialchars($contact["phone_number"]);
-$age = htmlspecialchars($contact["age"]);
-$profession = htmlspecialchars($profession["profession"]);
-$gender = htmlspecialchars($gender["gender"]);
-$bloodGroup = htmlspecialchars($blood_group["blood_group"]);
-$avatar = htmlspecialchars($contact["avatar"]);
+$name = isset($contact["name"]) ? htmlspecialchars($contact["name"]) : '';
+$email = isset($contact["email"]) ? htmlspecialchars($contact["email"]) : '';
+$phone_number = isset($contact["phone_number"]) ? htmlspecialchars($contact["phone_number"]) : '';
+$age = isset($contact["age"]) ? htmlspecialchars($contact["age"]) : '';
+$professionTitle = isset($profession["profession"]) ? htmlspecialchars($profession["profession"]) : '';
+$genderTitle = isset($gender["gender"]) ? htmlspecialchars($gender["gender"]) : '';
+$bloodGroup = isset($blood_group["blood_group"]) ? htmlspecialchars($blood_group["blood_group"]) : '';
+$avatar = isset($contact["avatar"]) ? htmlspecialchars($contact["avatar"]) : '';
+$dob = isset($contact["dob"]) ? htmlspecialchars($contact["dob"]) : '';
 $id = $contact["id"];
 
 ?>
@@ -116,10 +117,11 @@ $id = $contact["id"];
                 <div class="flex flex-col gap-4 font-semibold text-lg">
                     <p>Email: <?= $email ?></p>
                     <p>Phone Number: <?= $phone_number ?></p>
-                    <p>Age: <?= $age ? $age . "Years old" : "N/A" ?></p>
-                    <p>Profession: <?= $profession ?  ucfirst($profession) : "N/A" ?></p>
-                    <p>Gender: <?= $gender ?  ucfirst($gender) : "N/A" ?></p>
+                    <p>Age: <?= $age ? $age . " Years old" : "N/A" ?></p>
+                    <p>Profession: <?= $professionTitle ?  ucfirst($professionTitle) : "N/A" ?></p>
+                    <p>Gender: <?= $genderTitle ?  ucfirst($genderTitle) : "N/A" ?></p>
                     <p>Blood Group: <?= $bloodGroup ?  $bloodGroup : "N/A" ?></p>
+                    <p>Date of Birth: <?= $dob ? date("d F, Y", strtotime($dob)) : "N/A" ?></p>
                 </div>
                 <div class="flex justify-center gap-2 mt-8">
                     <a href="update-contact.php?id=<?= $id ?>" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Edit</a>

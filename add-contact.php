@@ -57,28 +57,28 @@ if (!isset($_SESSION["user_id"])) {
         </div>
         <section class="space-y-4 overflow-x-auto">
             <form action="includes/contacts/add-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-white">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex flex-col col-span-1">
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                    <div class="flex flex-col col-span-1 md:col-span-3">
                         <label for="name" class="font-semibold text-lg">Name:</label>
                         <input type="text" id="name" name="name" autofocus required placeholder="Enter name" class="p-2 focus:outline-none border rounded">
                     </div>
-                    <div class="flex flex-col col-span-1">
+                    <div class="flex flex-col col-span-1 md:col-span-3">
                         <label for="phone" class="font-semibold text-lg">Phone:</label>
                         <input type="tel" id="phone" name="phone" required placeholder="Enter phone number" class="p-2 focus:outline-none border rounded">
                     </div>
-                    <div class="flex flex-col col-span-1">
+                    <div class="flex flex-col col-span-1 md:col-span-3">
                         <label for="email" class="font-semibold text-lg">Email:</label>
                         <input type="email" id="email" name="email" required placeholder="Enter email" class="p-2 focus:outline-none border rounded">
                     </div>
-                    <div class="flex flex-col col-span-1">
+                    <div class="flex flex-col col-span-1 md:col-span-3">
                         <label for="age" class="font-semibold text-lg">Age:</label>
                         <input type="number" id="age" name="age" placeholder="Enter age" class="p-2 focus:outline-none border rounded">
                     </div>
-                    <div class="flex flex-col col-span-1">
+                    <div class="flex flex-col col-span-1 md:col-span-3">
                         <label for="address" class="font-semibold text-lg">Address:</label>
                         <input type="text" id="address" name="address" placeholder="Enter address" class="p-2 focus:outline-none border rounded">
                     </div>
-                    <div class="flex flex-col col-span-1">
+                    <div class="flex flex-col col-span-1 md:col-span-3">
                         <label for="gender" class="font-semibold text-lg">Gender:</label>
                         <select name="gender" id="gender" class="p-2 focus:outline-none border rounded">
                             <option value="">Select gender</option>
@@ -87,7 +87,11 @@ if (!isset($_SESSION["user_id"])) {
                             <option value="other">Other</option>
                         </select>
                     </div>
-                    <div class="flex flex-col col-span-1">
+                    <div class="flex flex-col col-span-1 md:col-span-2">
+                        <label for="dob" class="font-semibold text-lg">Date of birth:</label>
+                        <input type="date" id="dob" name="dob" required class="p-2 focus:outline-none border rounded">
+                    </div>
+                    <div class="flex flex-col col-span-1 md:col-span-2">
                         <label for="profession" class="font-semibold text-lg">Profession:</label>
                         <select name="profession" id="profession" class="p-2 focus:outline-none border rounded">
                             <option value="">Select profession</option>
@@ -97,7 +101,7 @@ if (!isset($_SESSION["user_id"])) {
                             <option value="other">Other</option>
                         </select>
                     </div>
-                    <div class="flex flex-col col-span-1">
+                    <div class="flex flex-col col-span-1 md:col-span-2">
                         <label for="blood_group" class="font-semibold text-lg">Blood Group</label>
                         <select name="blood_group" id="blood_group" class="p-2 focus:outline-none border rounded">
                             <option value="">Select blood group</option>

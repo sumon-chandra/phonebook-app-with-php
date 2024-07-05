@@ -51,37 +51,48 @@ if (!isset($_SESSION["user_id"])) {
         $phone_number = isset($_GET['phone-number']) ? htmlspecialchars($_GET['phone-number']) : '';
         $address = isset($_GET['address']) ? htmlspecialchars($_GET['address']) : '';
         $age = isset($_GET['age']) ? htmlspecialchars($_GET['age']) : '';
+        $dob = isset($_GET['dob']) ? htmlspecialchars($_GET["dob"]) : '';
         $gender = isset($_GET['gender']) ? htmlspecialchars($_GET['gender']) : '';
         $profession = isset($_GET['profession']) ? htmlspecialchars($_GET['profession']) : '';
         ?>
 
+        <!-- Search form -->
         <form class="bg-white p-5 rounded font-semibold" method="get" action="contacts.php" onsubmit="removeEmptyFields(this)">
-            <div class="flex flex-col gap-6">
-                <div class="flex justify-between gap-6">
-                    <input type="text" placeholder="Search by name" value="<?php echo $name ?>" name="name" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
-                    <input type="email" placeholder="Search by email" value="<?php echo $email ?>" name="email" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
-                    <input type="tel" placeholder="Search by phone number" value="<?php echo $phone_number ?>" name="phone-number" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
-                </div>
-                <div class="flex justify-between gap-6">
-                    <input type="number" placeholder="Search by age" value="<?php echo $age ?>" name="age" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
+            <div class="grid grid-cols-1 md:grid-cols-4 justify-center gap-6">
+                <input type="text" placeholder="Search by name" value="<?php echo $name ?>" name="name" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
+                <input type="email" placeholder="Search by email" value="<?php echo $email ?>" name="email" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
+                <input type="tel" placeholder="Search by phone number" value="<?php echo $phone_number ?>" name="phone-number" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
+                <input type="number" placeholder="Search by age" value="<?php echo $age ?>" name="age" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
+                <div class="col-span-1 md:col-span-4 grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <input type="date" placeholder="Search by birthday" value="<?php echo $dob ?>" name="dob" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
                     <select name="gender" id="gender" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
-                        <option value="">Select gender</option>
+                        <option value="">Gender</option>
                         <option value="male" <?php echo ($age == 'male') ? 'selected' : ''; ?>>Male</option>
                         <option value="female" <?php echo ($age == 'female') ? 'selected' : ''; ?>>Female</option>
                         <option value="other" <?php echo ($age == 'other') ? 'selected' : ''; ?>>Other</option>
                     </select>
                     <select name="profession" id="profession" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
-                        <option value="">Select profession</option>
+                        <option value="">Profession</option>
                         <option value="student" <?php echo ($profession == 'student') ? 'selected' : ''; ?>>Student</option>
                         <option value="teacher" <?php echo ($profession == 'teacher') ? 'selected' : ''; ?>>Teacher</option>
                         <option value="engineer" <?php echo ($profession == 'engineer') ? 'selected' : ''; ?>>Engineer</option>
                         <option value="other" <?php echo ($profession == 'other') ? 'selected' : ''; ?>>Other</option>
                     </select>
+                    <select name="blood_group" id="blood_group" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
+                        <option value="">Blood group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
                     <input type="text" placeholder="Search by address" value="<?php echo $address ?>" name="address" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
                 </div>
             </div>
             <div class="flex items-center justify-center gap-3 mt-2">
-
                 <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200">
                     <i class=" fa-solid fa-magnifying-glass"></i>
                     Search
@@ -95,6 +106,8 @@ if (!isset($_SESSION["user_id"])) {
                 endif ?>
             </div>
         </form>
+
+        <!-- Contacts table -->
         <div class="text-center pt-10">
             <h4 class="flex items-center justify-center gap-4 text-4xl font-bold">
                 <i class="fa-solid fa-address-book"></i>
