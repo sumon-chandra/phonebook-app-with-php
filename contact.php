@@ -9,6 +9,8 @@ if (!isset($_SESSION["user_id"])) {
     die();
 };
 
+$contactImage = "";
+
 if (isset($_GET["id"])) {
     try {
         $id = $_GET['id'];
@@ -39,6 +41,13 @@ if (isset($_GET["id"])) {
         $statement->bindParam(":contact_id", $contact["id"]);
         $statement->execute();
         $blood_group = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Get contacts_images
+        $query = "SELECT * FROM contacts_images WHERE contact_id = :contact_id";
+        $statement = $pdo->prepare($query);
+        $statement->bindParam(":contact_id", $contact["id"]);
+        $statement->execute();
+        $contactImage = $statement->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $error) {
         header("Location: contacts.php");
         die("Failed to load contact" . $error->getMessage());
@@ -106,8 +115,8 @@ $id = $contact["id"];
         <section class=" mt-10">
             <div class="flex flex-col items-start gap-2">
                 <div class="mx-auto text-center">
-                    <?php if (!empty($contact['avatar'])) : ?>
-                        <img src="<?= $avatar ?>" alt="Avatar" class="rounded-full mx-auto" style="max-width: 100px;">
+                    <?php if (isset($contactImage["image_url"])) : ?>
+                        <img src="uploads/contacts/<?= htmlspecialchars($contactImage["image_url"]) ?>" alt="Avatar" class="rounded-full mx-auto size-28 object-cover">
                     <?php else : ?>
                         <i class="fas fa-user-circle fa-5x"></i>
                     <?php endif; ?>

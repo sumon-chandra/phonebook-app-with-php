@@ -106,7 +106,7 @@ try {
             </h1>
         </div>
         <section class="space-y-4 overflow-x-auto">
-            <form action="includes/contacts/update-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-white">
+            <form action="includes/contacts/update-contact-handler.php" method="post" enctype="multipart/form-data" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-white">
                 <input type="hidden" name="id" value="<?= $contactId ?>">
 
                 <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
@@ -167,9 +167,13 @@ try {
                             <option value="O-" <?php echo ($bloodGroupName == 'O-') ? "selected" : "" ?>>O-</option>
                         </select>
                     </div>
+                    <div class="flex flex-col col-span-1 md:col-span-3">
+                        <label for="image" class="font-semibold text-lg">Update image:</label>
+                        <input type="file" name="image" id="image" accept="image/png, image/jpeg, image/webp, image/jpg">
+                    </div>
                 </div>
                 <div class="flex gap-3 justify-end">
-                    <button type="submit" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200">Update Contact</button>
+                    <input type="submit" value="Update contact" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200" />
                     <a href="contacts.php" class=" text-slate-200 bg-neutral-700 font-semibold px-4 py-1 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Cancel</a>
                 </div>
             </form>

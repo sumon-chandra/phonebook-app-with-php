@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {  // Corrected the equality operator
     $image_temp = $_FILES["image"]["tmp_name"];
     $ext = pathinfo($imageName, PATHINFO_EXTENSION);
     $imageUrl = "image_" . md5(uniqid()) . "_" . $imageName;
-    $targetPath = "../../uploads/contacts/" . $imageName;
+    $targetPath = "../../uploads/contacts/" . $imageUrl;
 
     // Validate form data
     if (empty($name) || empty($phone) || empty($email) || empty($dob)) {
