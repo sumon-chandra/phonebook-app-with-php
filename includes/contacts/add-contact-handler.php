@@ -10,8 +10,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {  // Corrected the equality operator
     $profession = $_POST["profession"];
     $gender = $_POST["gender"];
     $blood_group = $_POST["blood_group"];
-    $avatar = null;
     $dob = $_POST["dob"];
+
+    // Upload contact image file 
+    $imageName = $_FILES["image"]["name"];
+    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+    $image_temp = $_FILES["image"]["tmp_name"];
+    $ext = pathinfo($imageName, PATHINFO_EXTENSION);
+    $imageUrl = "image_" . md5(uniqid()) . "_" . $imageName;
+    $targetPath = "../../uploads/contacts/" . $imageName;
 
     // Validate form data
     if (empty($name) || empty($phone) || empty($email) || empty($dob)) {
@@ -64,6 +71,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {  // Corrected the equality operator
         $statement->bindParam(":blood_group", $blood_group);
         $statement->bindParam(":contact_id", $contact["id"]);
         $statement->execute();
+
+        // Upload image
+        if (in_array($ext, $allowed)) {
+            $movedImage = move_uploaded_file($image_temp, $targetPath);
+            if ($movedImage) {
+                $query = "INSERT INTO contacts_images (image_url, contact_id) VALUES (:image_url, :contact_id);";
+                $statement = $pdo->prepare($query);
+                $statement->bindParam(":image_url", $imageUrl);
+                $statement->bindParam(":contact_id", $contact["id"]);
+                $statement->execute();
+            };
+        }
 
         // Clean up
         $pdo = null;

@@ -56,7 +56,7 @@ if (!isset($_SESSION["user_id"])) {
             </h1>
         </div>
         <section class="space-y-4 overflow-x-auto">
-            <form action="includes/contacts/add-contact-handler.php" method="post" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-white">
+            <form action="includes/contacts/add-contact-handler.php" method="post" enctype="multipart/form-data" class="md:w-3/4 mx-auto flex flex-col gap-3 p-6 rounded-sm mt-10 bg-white">
                 <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                     <div class="flex flex-col col-span-1 md:col-span-3">
                         <label for="name" class="font-semibold text-lg">Name:</label>
@@ -115,9 +115,13 @@ if (!isset($_SESSION["user_id"])) {
                             <option value="O-">O-</option>
                         </select>
                     </div>
+                    <div class="flex flex-col col-span-1 md:col-span-3">
+                        <label for="image" class="font-semibold text-lg">Add image:</label>
+                        <input type="file" name="image" id="image" accept="image/png, image/jpeg, image/webp, image/jpg">
+                    </div>
                 </div>
                 <div class="flex gap-3 justify-end">
-                    <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200">Add Contact</button>
+                    <input type="submit" value="Add contact" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200" />
                     <a href="contacts.php" class=" text-slate-200 bg-neutral-700 font-semibold px-4 py-1 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Cancel</a>
                 </div>
             </form>
