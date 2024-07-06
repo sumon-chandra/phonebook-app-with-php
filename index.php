@@ -1,5 +1,9 @@
 <?php
 require_once "includes/config-session.php";
+
+
+$isLoggedIn = isset($_SESSION["email"]);
+$userId =  $_SESSION["user_id"];
 ?>
 
 <!DOCTYPE html>
@@ -19,22 +23,18 @@ require_once "includes/config-session.php";
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
         </h4>
-        <?php
-        $isLoggedIn = isset($_SESSION["email"]);
-        if ($isLoggedIn) { ?>
-            <div>
-                <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
-            </div>
-            <form action="includes/login/logout.php">
-                <button type="submit" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-                    Logout
-                </button>
-            </form>
-        <?php } else { ?>
-            <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-                Login
-            </a>
-        <?php } ?>
+        <div>
+            <?php
+            if ($isLoggedIn) { ?>
+                <div>
+                    <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
+                </div>
+            <?php } else { ?>
+                <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                    Login
+                </a>
+            <?php } ?>
+        </div>
     </header>
     <main class="flex items-center justify-center mt-32">
         <div class="p-6">
