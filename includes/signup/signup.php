@@ -5,6 +5,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $pwd = $_POST['password'];
 
+    // Upload user image file
+    $image_name = $_FILES['image']['name'];
+    $image_temp = $_FILES['image']['tmp_name'];
+    $allowed = ['jpg', 'png', 'jpeg'];
+    $ext = pathinfo($image_name, PATHINFO_EXTENSION);
+    $image_url = "user_" . md5(uniqid()) . "_" . $image_name;
+    $target_path = "../../uploads/users/" . $image_url;
+
     try {
         require_once "../db.php";
         require_once "signup-model.php";
@@ -32,6 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Register the user
         createUser($pdo, $name, $email, $pwd);
+
+        // Get user_id
+        $user = getUser($pdo, $email);
+
+        // Upload user image file
+        if (in_array($ext, $allowed)) {
+            $movedImage = move_uploaded_file($image_temp, $target_path);
+            if ($movedImage) {
+                uploadUserImage($pdo, $image_url, $user["id"]);
+            }
+        };
 
         $pdo = null;
         $statement = null;

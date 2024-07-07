@@ -1,12 +1,17 @@
 <?php
 require_once "includes/config-session.php";
 require_once "./includes/contacts/get-contacts.php";
+require_once "includes/users/get-user-image.php";
 
 // Check if the user is logged in
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     die();
 };
+
+$isLoggedIn = isset($_SESSION["email"]);
+$userId =  isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : "";
+$imageUrl = isset($userImage["image_url"]) ? $userImage["image_url"] : "";
 ?>
 
 <!DOCTYPE html>
@@ -27,22 +32,26 @@ if (!isset($_SESSION["user_id"])) {
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
         </h4>
-        <?php
-        $isLoggedIn = isset($_SESSION["email"]);
-        if ($isLoggedIn) { ?>
-            <div>
-                <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
-            </div>
-            <form action="includes/login/logout.php">
-                <button type="submit" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-                    Logout
-                </button>
-            </form>
-        <?php } else { ?>
-            <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-                Login
-            </a>
-        <?php } ?>
+        <div>
+            <?php
+            if ($isLoggedIn) { ?>
+                <?php if ($imageUrl) { ?>
+                    <a href="profile.php?id=<?php echo $userId; ?>">
+                        <img class="rounded-full size-12" src="uploads/users/<?php echo $imageUrl; ?>" alt="Avatar">
+                    </a>
+                <?php } else { ?>
+                    <div>
+                        <a href="profile.php?id=<?= $userId ?>">
+                            <i class="fas fa-user-circle fa-2x"></i>
+                        </a>
+                    </div>
+                <?php } ?>
+            <?php } else { ?>
+                <a href="login.php" class="bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
+                    Login
+                </a>
+            <?php } ?>
+        </div>
     </header>
     <main class="lg:w-3/4 lg:p-0 p-3 m-auto">
         <?=

@@ -20,7 +20,7 @@ require_once "./includes/signup/signup-view.php"
         <div>
             <h3 class="text-xl font-bold text-center">Signup</h3>
         </div>
-        <form action="./includes/signup/signup.php" method="post" class="bg-white min-w-96 p-6 rounded flex flex-col gap-3">
+        <form action="./includes/signup/signup.php" method="post" enctype="multipart/form-data" class="bg-white min-w-96 p-6 rounded flex flex-col gap-3">
             <div class="flex flex-col gap-1">
                 <label for="name" class="font-semibold">Name:</label>
                 <input type="name" id="name" name="name" class="border-2 border-neutral-300 focus:outline-none rounded px-2 py-1">
@@ -32,6 +32,10 @@ require_once "./includes/signup/signup-view.php"
             <div class="flex flex-col gap-1">
                 <label for="password" class="font-semibold">Password:</label>
                 <input type="password" id="password" name="password" class="border-2 border-neutral-300 focus:outline-none rounded px-2 py-1">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="image" class="font-semibold">Select image:</label>
+                <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/webp, image/jpg">
             </div>
             <div class="flex justify-center gap-1">
                 <button type="submit" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200 w-full">Signup</button>
