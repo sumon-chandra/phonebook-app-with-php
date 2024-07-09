@@ -1,22 +1,18 @@
 <?php
 require_once "includes/config-session.php";
-require_once "includes/users/get-user.php";
-require_once "includes/users/get-user-image.php";
+require_once "includes/users/user.php";
 
 // Check if the user is logged in
-if (!isset($_SESSION["user_id"])) {
+if (!$isLoggedIn) {
     header("Location: login.php");
     die();
 }
 
-
-$isLoggedIn = isset($_SESSION["email"]);
-$userId =  isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : "";
-$imageUrl = isset($userImage["image_url"]) ? $userImage["image_url"] : "";
-
 // Get user data
 $name = $user["name"];
 $email = $user["email"];
+$displayname = explode(" ", trim($name))[0];
+$imageUrl = "uploads/users/" . $user_image
 ?>
 
 <!DOCTYPE html>
@@ -39,13 +35,13 @@ $email = $user["email"];
         <div>
             <?php
             if ($isLoggedIn) { ?>
-                <?php if ($imageUrl) { ?>
-                    <a href="profile.php?id=<?php echo $userId; ?>">
-                        <img class="rounded-full size-12" src="uploads/users/<?php echo $imageUrl; ?>" alt="Avatar">
+                <?php if (!empty($user_image)) { ?>
+                    <a href="profile.php?id=<?= $user_id ?>">
+                        <img class="rounded-full size-12" src="<?= $imageUrl ?>" alt="Avatar">
                     </a>
                 <?php } else { ?>
                     <div>
-                        <a href="profile.php?id=<?= $userId ?>">
+                        <a href="profile.php?id=<?= $user_id ?>">
                             <i class="fas fa-user-circle fa-2x"></i>
                         </a>
                     </div>
@@ -65,16 +61,13 @@ $email = $user["email"];
             </a>
         </div>
         <div class="text-center pt-10">
-            <h1 class="flex items-center justify-center gap-4 text-4xl font-bold"><?= ucfirst($name) . "'s" ?> profile</h1>
+            <h1 class="flex items-center justify-center gap-4 text-4xl font-bold"><?= $displayname . "'s" ?> profile</h1>
         </div>
         <div class="flex flex-col justify-center items-center mt-10">
             <div class="min-w-96 p-6 bg-white rounded-lg shadow-md">
-                <div class="mb-4">
-                    <h2 class="text-xl font-bold">Profile</h2>
-                </div>
                 <div class="mx-auto text-center">
-                    <?php if ($imageUrl) : ?>
-                        <img src="uploads/users/<?= $imageUrl ?>" alt="Avatar" class="rounded-full mx-auto size-36 object-cover">
+                    <?php if (!empty($user_image)) : ?>
+                        <img src="<?= $imageUrl ?>" alt="Avatar" class="rounded-full mx-auto size-36 object-cover">
                     <?php else : ?>
                         <div class="text-2xl">
                             <i class="fas fa-user-circle fa-5x"></i>
@@ -90,11 +83,18 @@ $email = $user["email"];
                         <label class="block text-neutral-600 text-sm font-bold mb-2">Email:</label>
                         <span class="text-neutral-700 text-lg"><?= $email ?></span>
                     </div>
-                    <form action="includes/login/logout.php">
-                        <button type="submit" class="w-full bg-neutral-700 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">
-                            Logout
-                        </button>
-                    </form>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="update-profile.php" class="w-full block bg-neutral-600 text-white text-center font-semibold px-4 py-2 rounded cursor-pointer hover:bg-neutral-700 transition-colors duration-200">
+                            <i class="fa fa-pencil pr-1"></i>
+                            Edit Profile
+                        </a>
+                        <form action="includes/login/logout.php">
+                            <button type="submit" class="w-full bg-red-500 text-white font-semibold px-4 py-2 rounded cursor-pointer hover:bg-red-400 transition-colors duration-200">
+                                <i class="fa fa-sign-out pr-1"></i>
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
