@@ -1,7 +1,7 @@
 <?php
 require_once "includes/config-session.php";
 require_once "./includes/contacts/get-contacts.php";
-require_once "includes/users/get-user-image.php";
+require_once "includes/users/user.php";
 
 // Check if the user is logged in
 if (!isset($_SESSION["user_id"])) {
@@ -11,7 +11,7 @@ if (!isset($_SESSION["user_id"])) {
 
 $isLoggedIn = isset($_SESSION["email"]);
 $userId =  isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : "";
-$imageUrl = isset($userImage["image_url"]) ? $userImage["image_url"] : "";
+$imageUrl = "uploads/users/" . $user_image;
 ?>
 
 <!DOCTYPE html>
@@ -35,9 +35,9 @@ $imageUrl = isset($userImage["image_url"]) ? $userImage["image_url"] : "";
         <div>
             <?php
             if ($isLoggedIn) { ?>
-                <?php if ($imageUrl) { ?>
-                    <a href="profile.php?id=<?php echo $userId; ?>">
-                        <img class="rounded-full size-12" src="uploads/users/<?php echo $imageUrl; ?>" alt="Avatar">
+                <?php if (!empty($user_image)) { ?>
+                    <a href="profile.php?id=<?= $user_id ?>">
+                        <img class="rounded-full size-12" src="<?= $imageUrl ?>" alt="Avatar">
                     </a>
                 <?php } else { ?>
                     <div>

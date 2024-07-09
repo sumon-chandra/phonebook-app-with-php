@@ -54,9 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // Close database connection
-        $pdo = null;
-
         header("Location: ../../profile.php");
     } catch (PDOException $error) {
         die("An error occurred while updating the user info! " . $error->getMessage());
