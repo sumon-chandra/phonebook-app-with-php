@@ -1,9 +1,21 @@
 <?php
+// Define the absolute path to the db.php file
+$dbPath = dirname(__DIR__) . '/db.php';
+$configPath = dirname(__DIR__) . '/config-session.php';
 
-$searchPerformed = false;
+if (file_exists($dbPath) && file_exists($configPath)) {
+    require_once $dbPath;
+    require_once $configPath;
+} else {
+    die("Error: db.php or config file not found at " . $dbPath . " " . $configPath);
+}
+
+require_once "contact-model.php";
+require_once "contact-view.php";
+require_once "contact-contr.php";
+
 
 try {
-    require_once "./includes/db.php";
     $name = isset($_GET['name']) ? $_GET['name'] : '';
     $email = isset($_GET['email']) ? $_GET['email'] : '';
     $phone_number = isset($_GET['phone-number']) ? $_GET['phone-number'] : '';
@@ -23,6 +35,7 @@ try {
 
     $conditions = [];
     $parameters = [];
+    $searchPerformed = false;
 
     if ($name) {
         $conditions[] = "contacts.name LIKE :name";
@@ -65,20 +78,7 @@ try {
         $searchPerformed = true;
     }
 
-    if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
-        if ($conditions) {
-            $query .= " WHERE " . implode(" AND ", $conditions) . " AND user_id = " . $user_id . " ORDER BY created_at DESC";
-            $statement = $pdo->prepare($query);
-            $statement->execute($parameters);
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            $query = "SELECT * FROM contacts WHERE user_id = $user_id ORDER BY created_at DESC;";
-            $statement = $pdo->prepare($query);
-            $statement->execute();
-            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        }
-    }
+    $contacts = getAllContactsByUserId($pdo, $conditions, $parameters, $query);
 } catch (PDOException $error) {
     die("Failed to load contacts" . $error->getMessage());
 }

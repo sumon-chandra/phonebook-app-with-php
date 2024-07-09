@@ -4,12 +4,12 @@ require_once "./includes/contacts/get-contacts.php";
 require_once "includes/users/user.php";
 
 // Check if the user is logged in
-if (!isset($_SESSION["user_id"])) {
+$isLoggedIn = isset($_SESSION["email"]);
+if (!$isLoggedIn) {
     header("Location: login.php");
     die();
 };
 
-$isLoggedIn = isset($_SESSION["email"]);
 $userId =  isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : "";
 $imageUrl = "uploads/users/" . $user_image;
 ?>
@@ -147,10 +147,10 @@ $imageUrl = "uploads/users/" . $user_image;
                 <tbody class="bg-white">
                     <?php
 
-                    if (empty($data)) {
+                    if (empty($contacts)) {
                         echo "<tr><td colspan='5' class='text-center text-lg font-semibold py-4'>No contacts found</td></tr>";
                     } else {
-                        foreach ($data as $contact) : ?>
+                        foreach ($contacts as $contact) : ?>
                             <tr class="border rounded">
                                 <td class="px-4 py-2">
                                     <a href="contact.php?id=<?= $contact["id"]; ?>"><?= htmlspecialchars($contact["name"]) ?></a>

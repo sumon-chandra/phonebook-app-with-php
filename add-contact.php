@@ -1,14 +1,15 @@
 <?php
 require_once "includes/config-session.php";
 require_once "includes/users/user.php";
+require_once "includes/contacts/contact-view.php";
 
 // Check if the user is logged in
-if (!isset($_SESSION["user_id"])) {
+$isLoggedIn = isset($_SESSION["email"]);
+if (!$isLoggedIn) {
     header("Location: login.php");
     die();
 };
 
-$isLoggedIn = isset($_SESSION["email"]);
 $userId =  isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : "";
 $imageUrl = "uploads/users/" . $user_image;
 ?>
@@ -131,7 +132,7 @@ $imageUrl = "uploads/users/" . $user_image;
                     <input type="submit" value="Add contact" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200" />
                     <a href="contacts.php" class=" text-slate-200 bg-neutral-700 font-semibold px-4 py-1 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Cancel</a>
                 </div>
-            </form>
+                <?= displayErrors() ?>
             </form>
         </section>
     </main>
