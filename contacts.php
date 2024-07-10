@@ -61,8 +61,9 @@ $imageUrl = "uploads/users/" . $user_image;
         $address = isset($_GET['address']) ? htmlspecialchars($_GET['address']) : '';
         $age = isset($_GET['age']) ? htmlspecialchars($_GET['age']) : '';
         $dob = isset($_GET['dob']) ? htmlspecialchars($_GET["dob"]) : '';
-        $gender = isset($_GET['gender']) ? htmlspecialchars($_GET['gender']) : '';
-        $profession = isset($_GET['profession']) ? htmlspecialchars($_GET['profession']) : '';
+        $genderTitle = isset($_GET['gender']) ? htmlspecialchars($_GET['gender']) : '';
+        $professionTitle = isset($_GET['profession']) ? htmlspecialchars($_GET['profession']) : '';
+        $bloodGroupTitle = isset($_GET['blood_group']) ? htmlspecialchars($_GET['blood_group']) : '';
         ?>
 
         <!-- Search form -->
@@ -76,27 +77,27 @@ $imageUrl = "uploads/users/" . $user_image;
                     <input type="date" placeholder="Search by birthday" value="<?php echo $dob ?>" name="dob" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
                     <select name="gender" id="gender" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
                         <option value="">Gender</option>
-                        <option value="male" <?php echo ($age == 'male') ? 'selected' : ''; ?>>Male</option>
-                        <option value="female" <?php echo ($age == 'female') ? 'selected' : ''; ?>>Female</option>
-                        <option value="other" <?php echo ($age == 'other') ? 'selected' : ''; ?>>Other</option>
+                        <option value="male" <?php echo ($genderTitle == 'male') ? 'selected' : ''; ?>>Male</option>
+                        <option value="female" <?php echo ($genderTitle == 'female') ? 'selected' : ''; ?>>Female</option>
+                        <option value="other" <?php echo ($genderTitle == 'other') ? 'selected' : ''; ?>>Other</option>
                     </select>
                     <select name="profession" id="profession" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
                         <option value="">Profession</option>
-                        <option value="student" <?php echo ($profession == 'student') ? 'selected' : ''; ?>>Student</option>
-                        <option value="teacher" <?php echo ($profession == 'teacher') ? 'selected' : ''; ?>>Teacher</option>
-                        <option value="engineer" <?php echo ($profession == 'engineer') ? 'selected' : ''; ?>>Engineer</option>
-                        <option value="other" <?php echo ($profession == 'other') ? 'selected' : ''; ?>>Other</option>
+                        <option value="student" <?php echo ($professionTitle == 'student') ? 'selected' : ''; ?>>Student</option>
+                        <option value="teacher" <?php echo ($professionTitle == 'teacher') ? 'selected' : ''; ?>>Teacher</option>
+                        <option value="engineer" <?php echo ($professionTitle == 'engineer') ? 'selected' : ''; ?>>Engineer</option>
+                        <option value="other" <?php echo ($professionTitle == 'other') ? 'selected' : ''; ?>>Other</option>
                     </select>
                     <select name="blood_group" id="blood_group" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
-                        <option value="">Blood group</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
+                        <option value="">Select blood group</option>
+                        <option value="A+" <?php echo ($bloodGroupTitle == 'A+') ? "selected" : "" ?>>A+</option>
+                        <option value="A-" <?php echo ($bloodGroupTitle == 'A-') ? "selected" : "" ?>>A-</option>
+                        <option value="B+" <?php echo ($bloodGroupTitle == 'B+') ? "selected" : "" ?>>B+</option>
+                        <option value="B-" <?php echo ($bloodGroupTitle == 'B-') ? "selected" : "" ?>>B-</option>
+                        <option value="AB+" <?php echo ($bloodGroupTitle == 'AB+') ? "selected" : "" ?>>AB+</option>
+                        <option value="AB-" <?php echo ($bloodGroupTitle == 'AB-') ? "selected" : "" ?>>AB-</option>
+                        <option value="O+" <?php echo ($bloodGroupTitle == 'O+') ? "selected" : "" ?>>O+</option>
+                        <option value="O-" <?php echo ($bloodGroupTitle == 'O-') ? "selected" : "" ?>>O-</option>
                     </select>
                     <input type="text" placeholder="Search by address" value="<?php echo $address ?>" name="address" class="w-full focus:outline-none border rounded p-2 border-neutral-700">
                 </div>
@@ -126,7 +127,6 @@ $imageUrl = "uploads/users/" . $user_image;
         <section class="space-y-4 overflow-x-auto">
             <div class="flex justify-between items-start mt-10">
                 <h3 class="text-xl font-semibold">Contacts</h3>
-                <!-- Search form -->
                 <div class="flex gap-3">
                     <a href="add-contact.php" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200">
                         + Add contact

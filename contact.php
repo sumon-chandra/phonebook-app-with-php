@@ -119,28 +119,28 @@ $bloodGroup = htmlspecialchars($blood_group);
                         <span class="text-neutral-700"><?= $email ?></span>
                     </div>
                     <div class="mb-4 p-2 rounded shadow">
-                        <h3 class="text-neutral-600 text-sm font-bold">Address:</h3>
-                        <span class="text-neutral-700"><?= $address ?></span>
-                    </div>
-                    <div class="mb-4 p-2 rounded shadow">
                         <h3 class="text-neutral-600 text-sm font-bold">Age:</h3>
-                        <span class="text-neutral-700"><?= $age ?></span>
+                        <span class="text-neutral-700"><?= $age ? $age : "N/A" ?></span>
                     </div>
                     <div class="mb-4 p-2 rounded shadow">
                         <h3 class="text-neutral-600 text-sm font-bold">Date of Birth:</h3>
-                        <span class="text-neutral-700"><?= $dob ?></span>
+                        <span class="text-neutral-700"><?= $dob ? $dob : "N/A" ?></span>
                     </div>
                     <div class="mb-4 p-2 rounded shadow">
                         <h3 class="text-neutral-600 text-sm font-bold">Gender:</h3>
-                        <span class="text-neutral-700"><?= ucfirst($genderTitle) ?></span>
+                        <span class="text-neutral-700"><?= $genderTitle ? ucfirst($genderTitle) : "N/A" ?></span>
                     </div>
                     <div class="mb-4 p-2 rounded shadow">
                         <h3 class="text-neutral-600 text-sm font-bold">Blood Group:</h3>
-                        <span class="text-neutral-700"><?= $blood_group ?></span>
+                        <span class="text-neutral-700"><?= $blood_group ? $blood_group : "N/A" ?></span>
                     </div>
                     <div class="mb-4 p-2 rounded shadow">
                         <h3 class="text-neutral-600 text-sm font-bold">Profession:</h3>
-                        <span class="text-neutral-700"><?= ucfirst($professionTitle) ?></span>
+                        <span class="text-neutral-700"><?= $professionTitle ? ucfirst($professionTitle) : "N/A" ?></span>
+                    </div>
+                    <div class="mb-4 p-2 rounded shadow col-span-1 md:col-span-2">
+                        <h3 class="text-neutral-600 text-sm font-bold">Address:</h3>
+                        <span class="text-neutral-700"><?= $address ? $address : "N/A" ?></span>
                     </div>
                 </div>
                 <div>

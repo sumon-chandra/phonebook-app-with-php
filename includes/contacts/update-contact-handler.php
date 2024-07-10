@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $image_temp = $_FILES["image"]["tmp_name"];
             $ext = pathinfo($imageName, PATHINFO_EXTENSION);
             $newImageUrl = "image_" . $contactId . "_" . $imageName;
-            $targetPath = "../../uploads/contacts/" . $imageUrl;
+            $targetPath = "../../uploads/contacts/" . $newImageUrl;
 
             // Update the image_url from contacts_images table
             if (in_array($ext, $allowed)) {

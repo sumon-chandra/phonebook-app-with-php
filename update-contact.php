@@ -2,6 +2,8 @@
 <?php
 require_once "./includes/db.php";
 require_once "./includes/config-session.php";
+require_once "includes/contacts/contact-model.php";
+require_once "includes/contacts/contact-contr.php";
 require_once "includes/users/user.php";
 
 // Check if the user is logged in
@@ -18,30 +20,11 @@ $contactId = $_GET["id"];
 
 try {
     // Get contact
-    $query = "SELECT * FROM contacts WHERE id = $contactId;";
-    $statement = $pdo->prepare($query);
-    $statement->execute();
-    $contact = $statement->fetch(PDO::FETCH_ASSOC);
-
+    $contact = getContactById($pdo, $contactId);
     $contactDBId = $contact["id"];
-
-    // Get profession
-    $query = "SELECT * FROM professions WHERE contact_id = $contactDBId;";
-    $statement = $pdo->prepare($query);
-    $statement->execute();
-    $profession = $statement->fetch(PDO::FETCH_ASSOC);
-
-    // Get gender
-    $query = "SELECT * FROM genders WHERE contact_id = $contactDBId;";
-    $statement = $pdo->prepare($query);
-    $statement->execute();
-    $gender = $statement->fetch(PDO::FETCH_ASSOC);
-
-    // Get blood group
-    $query = "SELECT * FROM blood_groups WHERE contact_id = $contactDBId;";
-    $statement = $pdo->prepare($query);
-    $statement->execute();
-    $bloodGroup = $statement->fetch(PDO::FETCH_ASSOC);
+    $profession = getProfessionById($pdo, $contactId);
+    $gender = getGenderById($pdo, $contactId);
+    $bloodGroup = getBloodGroupById($pdo, $contactId);
 
     if (!$contact) {
         die("Contact not found.");
@@ -53,7 +36,6 @@ try {
     $address = isset($contact["address"]) ? htmlspecialchars($contact["address"]) : '';
     $age = isset($contact["age"]) ? htmlspecialchars($contact["age"]) : '';
     $dob = isset($contact["dob"]) ? htmlspecialchars($contact["dob"]) : '';
-    $avatar = isset($contact["avatar"]) ? htmlspecialchars($contact["avatar"]) : '';
     $professionName = isset($profession["profession"]) ? htmlspecialchars($profession["profession"]) : '';
     $genderName = isset($gender["gender"]) ? htmlspecialchars($gender["gender"]) : '';
     $bloodGroupName = isset($bloodGroup["blood_group"]) ? htmlspecialchars($bloodGroup["blood_group"]) : '';
@@ -180,7 +162,7 @@ try {
                     </div>
                 </div>
                 <div class="flex gap-3 justify-end">
-                    <input type="submit" value="Update contact" class="bg-blue-400 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-500 transition-colors duration-200" />
+                    <input type="submit" value="Update contact" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200" />
                     <a href="contacts.php" class=" text-slate-200 bg-neutral-700 font-semibold px-4 py-1 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Cancel</a>
                 </div>
             </form>
