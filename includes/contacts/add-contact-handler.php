@@ -19,12 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"];
     $phone = $_POST["phone"];
     $email = $_POST["email"];
-    $address = $_POST["address"];
-    $age = $_POST["age"];
-    $profession = $_POST["profession"];
-    $gender = $_POST["gender"];
-    $blood_group = $_POST["blood_group"];
     $dob = $_POST["dob"];
+    $district_id = $_POST["district"];
+    $profession_id = $_POST["profession"];
+    $gender_id = $_POST["gender"];
+    $blood_group_id = $_POST["blood_group"];
+    $contact_image = "";
 
     // Error handling
     $errors = [];
@@ -34,48 +34,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors["invalid_inputs"] = "Name, phone, email and date of birth are required.";
         die();
     }
+    try {
+        //code...
 
-    $isLoggedIn = isset($_SESSION["user_id"]);
-    $user_id = $isLoggedIn ? $_SESSION["user_id"] : "";
 
-    // Check if contact already exists
-    if (!isPhoneNumberExist($pdo, $phone)) {
+        $isLoggedIn = isset($_SESSION["user_id"]);
+        $user_id = $isLoggedIn ? $_SESSION["user_id"] : "";
 
-        // Insert data into database
-        $newContactId = insertContact($pdo, $name, $phone, $email, $address, $age, $dob, $user_id);
+        // Check if contact already exists
+        if (!isPhoneNumberExist($pdo, $phone)) {
+            // Upload contact image file 
+            $imageName = $_FILES["image"]["name"];
+            if (!empty($imageName)) {
+                $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+                $image_temp = $_FILES["image"]["tmp_name"];
+                $ext = pathinfo($imageName, PATHINFO_EXTENSION);
+                $imageUrl = "contact_" . $imageName;
+                $targetPath = "../../uploads/contacts/" . $imageUrl;
 
-        // Upload contact image file 
-        $imageName = $_FILES["image"]["name"];
-        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
-        $image_temp = $_FILES["image"]["tmp_name"];
-        $ext = pathinfo($imageName, PATHINFO_EXTENSION);
-        $imageUrl = "image_" . $newContactId . "_" . $imageName;
-        $targetPath = "../../uploads/contacts/" . $imageUrl;
-
-        insertProfession($pdo, $profession, $newContactId);
-        insertGender($pdo, $gender, $newContactId);
-        insertBloodGroup($pdo, $blood_group, $newContactId);
-
-        if (!empty($imageName)) {
-            if (in_array($ext, $allowed)) {
-                move_uploaded_file($image_temp, $targetPath);
-                insertContactImage($pdo, $imageUrl, $newContactId);
+                if (!empty($imageName)) {
+                    if (in_array($ext, $allowed)) {
+                        $contactImg = move_uploaded_file($image_temp, $targetPath);
+                        if ($contactImg) {
+                            $contact_image = $imageUrl;
+                        }
+                    }
+                }
             }
+
+            // Insert data into database
+            insertContact($pdo, $name, $email, $phone, $contact_image, $dob, $user_id, $gender_id, $district_id, $blood_group_id, $profession_id);
+        } else {
+            $errors["number_exist"] = "Phone number already exists. Try different phone number!";
         }
-    } else {
-        header("Location:../../add-contact.php");
-        $errors["number_exist"] = "Phone number already exists. Try different phone number!";
+
+        if ($errors) {
+            $_SESSION["add_contact_errors"] = $errors;
+            header("Location:../../add-contact.php");
+            die();
+        }
+
+        // Close database connection
+        $pdo = null;
+        $statement = null;
+        // Redirect to contacts page with success message
+        header("Location:../../contacts.php");
+        die();
+    } catch (PDOException $error) {
+        echo "Failed to add contact : " . $error->getMessage();
         die();
     }
-
-    if ($errors) {
-        $_SESSION["add_contact_errors"] = $errors;
-        header("Location:../../add-contact.php");
-        die();
-    }
-
-    // Redirect to contacts page with success message
-    header("Location:../../contacts.php");
 } else {
     header("Location: ../../contacts.php");
+    die();
 }

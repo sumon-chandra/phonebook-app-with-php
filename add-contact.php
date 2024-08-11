@@ -2,16 +2,16 @@
 require_once "includes/config-session.php";
 require_once "includes/users/user.php";
 require_once "includes/contacts/contact-view.php";
+require_once "includes/contacts/get-contacts.php";
 
 // Check if the user is logged in
-$isLoggedIn = isset($_SESSION["email"]);
+$isLoggedIn = isset($_SESSION["user_id"]);
 if (!$isLoggedIn) {
     header("Location: login.php");
     die();
 };
 
-$userId =  isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : "";
-$imageUrl = "uploads/users/" . $user_image;
+$isAvatarExist = isset($user["avatar"]);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ $imageUrl = "uploads/users/" . $user_image;
     <title>Add contact - Phonebook</title>
 </head>
 
-<body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
+<body class="min-w-full min-h-screen bg-neutral-200 text-neutral-700">
     <header class="flex justify-between items-center p-3">
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
@@ -34,13 +34,13 @@ $imageUrl = "uploads/users/" . $user_image;
         <div>
             <?php
             if ($isLoggedIn) { ?>
-                <?php if (!empty($user_image)) { ?>
+                <?php if (!empty($isAvatarExist)) { ?>
                     <a href="profile.php?id=<?= $user_id ?>">
-                        <img class="rounded-full size-12" src="<?= $imageUrl ?>" alt="Avatar">
+                        <img class="rounded-full size-12" src="uploads/users/<?= $user["avatar"] ?>" alt="Avatar">
                     </a>
                 <?php } else { ?>
                     <div>
-                        <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?php echo $_SESSION["email"]; ?></span>
+                        <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?= $_SESSION["email"]; ?></span>
                     </div>
                 <?php } ?>
             <?php } else { ?>
@@ -79,20 +79,21 @@ $imageUrl = "uploads/users/" . $user_image;
                         <input type="email" id="email" name="email" required placeholder="Enter email" class="p-2 focus:outline-none border rounded">
                     </div>
                     <div class="flex flex-col col-span-1 md:col-span-3">
-                        <label for="age" class="font-semibold text-lg">Age:</label>
-                        <input type="number" id="age" name="age" placeholder="Enter age" class="p-2 focus:outline-none border rounded">
+                        <label for="district" class="font-semibold text-lg">District:</label>
+                        <select name="district" id="district" class="p-2 focus:outline-none border rounded w-full">
+                            <option value="">Select district</option>
+                            <?php foreach ($districts as $district) : ?>
+                                <option value="<?= $district["id"] ?>"><?= $district["district"] ?></option>
+                            <?php endforeach ?>
+                        </select>
                     </div>
-                    <div class="flex flex-col col-span-1 md:col-span-3">
-                        <label for="address" class="font-semibold text-lg">Address:</label>
-                        <input type="text" id="address" name="address" placeholder="Enter address" class="p-2 focus:outline-none border rounded">
-                    </div>
-                    <div class="flex flex-col col-span-1 md:col-span-3">
+                    <div class="flex flex-col col-span-1 md:col-span-2">
                         <label for="gender" class="font-semibold text-lg">Gender:</label>
                         <select name="gender" id="gender" class="p-2 focus:outline-none border rounded">
                             <option value="">Select gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Other</option>
                         </select>
                     </div>
                     <div class="flex flex-col col-span-1 md:col-span-2">
@@ -100,31 +101,25 @@ $imageUrl = "uploads/users/" . $user_image;
                         <input type="date" id="dob" name="dob" required class="p-2 focus:outline-none border rounded">
                     </div>
                     <div class="flex flex-col col-span-1 md:col-span-2">
-                        <label for="profession" class="font-semibold text-lg">Profession:</label>
-                        <select name="profession" id="profession" class="p-2 focus:outline-none border rounded">
-                            <option value="">Select profession</option>
-                            <option value="student">Student</option>
-                            <option value="teacher">Teacher</option>
-                            <option value="engineer">Engineer</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col col-span-1 md:col-span-2">
                         <label for="blood_group" class="font-semibold text-lg">Blood Group</label>
                         <select name="blood_group" id="blood_group" class="p-2 focus:outline-none border rounded">
                             <option value="">Select blood group</option>
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
+                            <?php foreach ($blood_groups as $blood) : ?>
+                                <option value="<?= $blood["id"] ?>"><?= $blood["blood"] ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
                     <div class="flex flex-col col-span-1 md:col-span-3">
-                        <label for="image" class="font-semibold text-lg">Add image:</label>
+                        <label for="profession" class="font-semibold text-lg">Profession:</label>
+                        <select name="profession" id="profession" class="p-2 focus:outline-none border rounded">
+                            <option value="">Select profession</option>
+                            <?php foreach ($professions as $profession) : ?>
+                                <option value="<?= $profession["id"] ?>"><?= $profession["profession"] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="flex flex-col col-span-1 md:col-span-3">
+                        <label for="" class="font-semibold text-lg">Add image:</label>
                         <input type="file" name="image" id="image" accept="image/png, image/jpeg, image/webp, image/jpg">
                     </div>
                 </div>
@@ -132,9 +127,16 @@ $imageUrl = "uploads/users/" . $user_image;
                     <input type="submit" value="Add contact" class="bg-blue-500 text-white font-semibold px-4 py-1 rounded cursor-pointer hover:bg-blue-400 transition-colors duration-200" />
                     <a href="contacts.php" class=" text-slate-200 bg-neutral-700 font-semibold px-4 py-1 rounded cursor-pointer hover:bg-neutral-600 transition-colors duration-200">Cancel</a>
                 </div>
-                <?= displayErrors() ?>
             </form>
         </section>
+        <div class="text-center font-semibold">
+            <?=
+            displayErrors("add");
+            if (isset($_SESSION["add_contact_errors"])) {
+                unset($_SESSION["add_contact_errors"]);
+            }
+            ?>
+        </div>
     </main>
 </body>
 

@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isEmailWrong($user)) {
                 $errors["invalid_email"] = "Invalid Email!";
             }
-            if (isPwdWrong($user['pwd'], $pwd)) {
+            if (isPwdWrong($user['hashed_pwd'], $pwd)) {
                 $errors["invalid_password"] = "Invalid password!";
             }
         }
@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newSessionId = session_create_id();
         $sessionId = $newSessionId . "_" . $user["id"];
         session_id($sessionId);
-
         require_once "../config-session.php";
+
 
         if ($errors) {
             $_SESSION["login_error"] = $errors;
@@ -46,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Login the user
         $_SESSION["user_id"] = $user["id"];
-        $_SESSION["email"] = $user["email"];
 
         $pdo = null;
         $statement = null;
+
         $_SESSION["last_regeneration_time"] = time();
 
         $pdo = null;

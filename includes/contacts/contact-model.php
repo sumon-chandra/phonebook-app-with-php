@@ -1,18 +1,35 @@
 <?php
 
 // Get the contact
-function getContactByPhone(object $pdo, string $phone_number)
+function getContact(object $pdo, string $contactId)
 {
-    $query = "SELECT * FROM contacts WHERE phone_number = :phone_number;";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":phone_number", $phone_number);
-    $statement->execute();
-    $contact = $statement->fetch(PDO::FETCH_ASSOC);
-    return $contact;
-}
-function getContactById(object $pdo, string $contactId)
-{
-    $query = "SELECT * FROM contacts WHERE id = :id;";
+    $query = "SELECT 
+                c.id,
+                c.created_at,
+                c.updated_at,
+                c.contact_name,
+                c.contact_email,
+                c.contact_number,
+                c.contact_image,
+                c.dob,
+                u.id AS creator_id,
+                d.district,
+                g.gender,
+                bg.blood AS blood_group,
+                p.profession
+            FROM contacts AS c 
+            LEFT JOIN users AS u 
+            ON u.id = c.user_id
+            LEFT JOIN districts AS d 
+            ON d.id = c.district_id
+            LEFT JOIN genders AS g 
+            ON g.id = c.gender_id
+            LEFT JOIN blood_groups AS bg
+            ON bg.id = c.blood_group_id
+            LEFT JOIN professions AS p
+            ON p.id = c.profession_id
+            WHERE c.id = :id;";
+
     $statement = $pdo->prepare($query);
     $statement->bindParam(":id", $contactId);
     $statement->execute();
@@ -20,107 +37,107 @@ function getContactById(object $pdo, string $contactId)
     return $contact;
 }
 
-function getProfessionById(object $pdo, string $contactId)
+function isPhoneNumberFound(object $pdo, $contact_number)
 {
-    $query = "SELECT * FROM professions WHERE contact_id = :contact_id;";
+    $query = "SELECT COUNT(*) as count FROM contacts WHERE contact_number = :contact_number;";
     $statement = $pdo->prepare($query);
-    $statement->bindParam(":contact_id", $contactId);
+    $statement->bindParam(":contact_number", $contact_number);
     $statement->execute();
-    $profession = $statement->fetch(PDO::FETCH_ASSOC);
-    return isset($profession["profession"]) ? $profession["profession"] : "";
-};
-
-function getGenderById(object $pdo, string $contactId)
-{
-    $query = "SELECT * FROM genders WHERE contact_id = :contact_id;";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-    $gender = $statement->fetch(PDO::FETCH_ASSOC);
-    return isset($gender["gender"]) ? $gender["gender"] : "";
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result["count"] > 0;
 }
 
-function getBloodGroupById(object $pdo, string $contactId)
+function getDistricts(object $pdo)
 {
-    $query = "SELECT * FROM blood_groups WHERE contact_id = :contact_id;";
+    $query = "SELECT * FROM districts;";
     $statement = $pdo->prepare($query);
-    $statement->bindParam(":contact_id", $contactId);
     $statement->execute();
-    $bloodGroup = $statement->fetch(PDO::FETCH_ASSOC);
-    return isset($bloodGroup["blood_group"]) ? $bloodGroup["blood_group"] : "";
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function insertContact(object $pdo, string $name, string $phone_number, string $email, string $address, string $age, string $dob, string $user_id)
+function getBloodGroups(object $pdo)
 {
-    $query = "INSERT INTO contacts (name, phone_number, email, address, age, dob, user_id) VALUES (:name, :phone_number, :email, :address, :age, :dob, :user_id);";
+    $query = "SELECT * FROM blood_groups;";
     $statement = $pdo->prepare($query);
-    $statement->bindParam(":name", $name);
-    $statement->bindParam(":phone_number", $phone_number);
-    $statement->bindParam(":email", $email);
-    $statement->bindParam(":address", $address);
-    $statement->bindParam(":age", $age);
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getProfessions(object $pdo)
+{
+    $query = "SELECT * FROM professions;";
+    $statement = $pdo->prepare($query);
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function insertContact(object $pdo, string $contact_name, string $contact_email, string $contact_number, string $contact_image, string $dob, string $user_id, string $gender_id, string $district_id, string $blood_group_id, string $profession_id)
+{
+    $query = "INSERT INTO contacts 
+                    (contact_name, contact_email, contact_number, contact_image, dob, user_id, gender_id, district_id, blood_group_id, profession_id) 
+                    VALUES 
+                    (:contact_name, :contact_email, :contact_number, :contact_image, :dob, :user_id, :gender_id, :district_id, :blood_group_id, :profession_id);";
+
+    $statement = $pdo->prepare($query);
+    $statement->bindParam(":contact_name", $contact_name);
+    $statement->bindParam(":contact_email", $contact_email);
+    $statement->bindParam(":contact_number", $contact_number);
+    $statement->bindParam(":contact_image", $contact_image);
     $statement->bindParam(":dob", $dob);
     $statement->bindParam(":user_id", $user_id);
+    $statement->bindParam(":gender_id", $gender_id);
+    $statement->bindParam(":district_id", $district_id);
+    $statement->bindParam(":blood_group_id", $blood_group_id);
+    $statement->bindParam(":profession_id", $profession_id);
     $statement->execute();
     $newContactId = $pdo->lastInsertId();
     return $newContactId;
 }
 
-function insertProfession(object $pdo, string $profession, int $contactId)
+function getAllContactsByUserId(object $pdo, array $conditions, array $parameters, string $query, string $user_id)
 {
-    $query = "INSERT INTO professions (profession, contact_id) VALUES (:profession, :contact_id);";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":profession", $profession);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-}
+    $MAIN_QUERY = "SELECT 
+                    c.id,
+                    c.created_at,
+                    c.updated_at,
+                    c.contact_name,
+                    c.contact_email,
+                    c.contact_number,
+                    c.contact_image,
+                    c.dob,
+                    u.id AS creator_id,
+                    d.district,
+                    g.gender,
+                    bg.blood AS blood_group,
+                    p.profession
+                FROM contacts AS c 
+                LEFT JOIN users AS u 
+                ON u.id = c.user_id
+                LEFT JOIN districts AS d 
+                ON d.id = c.district_id
+                LEFT JOIN genders AS g 
+                ON g.id = c.gender_id
+                LEFT JOIN blood_groups AS bg
+                ON bg.id = c.blood_group_id
+                LEFT JOIN professions AS p
+                ON p.id = c.profession_id
+                WHERE c.user_id = :user_id
+                ORDER BY c.created_at DESC;
+                ";
 
-function insertGender(object $pdo, string $gender, int $contactId)
-{
-    $query = "INSERT INTO genders (gender, contact_id) VALUES (:gender, :contact_id);";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":gender", $gender);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-}
+    $CONDITION_QUERY = $query .= " WHERE " . implode(" AND ", $conditions) . " AND user_id = " . $user_id . " ORDER BY created_at DESC";
 
-function insertBloodGroup(object $pdo, string $bloodGroup, int $contactId)
-{
-    $query = "INSERT INTO blood_groups (blood_group, contact_id) VALUES (:blood_group, :contact_id);";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":blood_group", $bloodGroup);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-}
-
-function insertContactImage(object | null $pdo, string $imageUrl, string $contactId)
-{
-    $query = "INSERT INTO contacts_images (image_url, contact_id) VALUES (:image_url, :contact_id);";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":image_url", $imageUrl);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-}
-
-function getAllContactsByUserId(object $pdo, array $conditions, array $parameters, string $query)
-{
-    $isLoggedIn = isset($_SESSION["user_id"]);
-    $user_id = $isLoggedIn ? $_SESSION["user_id"] : "";
-
-    if ($isLoggedIn) {
-        if ($conditions) {
-            $query .= " WHERE " . implode(" AND ", $conditions) . " AND user_id = " . $user_id . " ORDER BY created_at DESC";
-            $statement = $pdo->prepare($query);
-            $statement->execute($parameters);
-            $searchResult = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return $searchResult;
-        } else {
-            $query = "SELECT * FROM contacts WHERE user_id = $user_id ORDER BY created_at DESC;";
-            $statement = $pdo->prepare($query);
-            $statement->execute();
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
-        }
+    if ($conditions) {
+        $statement = $pdo->prepare($CONDITION_QUERY);
+        $statement->execute($parameters);
+        $searchResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $searchResult;
+    } else {
+        $statement = $pdo->prepare($MAIN_QUERY);
+        $statement->bindParam(":user_id", $user_id);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
 
@@ -133,100 +150,22 @@ function deleteContact(object $pdo, string $contactId)
     $statement->execute();
 }
 
-function deleteGender(object $pdo, string $contactId)
-{
-    $query = "DELETE FROM genders WHERE id = :id";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":id", $contactId);
-    $statement->execute();
-};
-
-function deleteProfession(object $pdo, string $contactId)
-{
-    $query = "DELETE FROM professions WHERE contact_id = :contact_id";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-};
-
-function deleteBloodGroup(object $pdo, string $contactId)
-{
-    $query = "DELETE FROM blood_groups WHERE contact_id = :contact_id";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-};
-
-function getContactImageById(object $pdo, string $contactId)
-{
-    $query = "SELECT * FROM contacts_images WHERE contact_id = :contact_id";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-    $contactImage = $statement->fetch(PDO::FETCH_ASSOC);
-    return isset($contactImage["image_url"]) ? $contactImage["image_url"] : "";
-}
-
-function deleteContactImage(object $pdo, string $contactId)
-{
-    // Delete the contact image from folder
-    $imageUrl = getContactImageById($pdo, $contactId);
-    deleteContactImageIfExists($imageUrl);
-
-    // Delete the contact image from database
-    $query = "DELETE FROM contacts_images WHERE contact_id = :contact_id";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":contact_id", $contactId);
-    $statement->execute();
-};
-
 // Updates the contact
-function updateContactImage(object $pdo, string $contactId, string $imageUrl)
+function updateContact(object $pdo, string $contact_name, string $contact_email, string $contact_number, string $contact_image, string $dob, string $user_id, string $gender_id, string $district_id, string $blood_group_id, string $profession_id, string $contact_id)
 {
-    $query = "UPDATE contacts_images SET image_url = :image_url WHERE contact_id = :contact_id;";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":image_url", $imageUrl);
-    $statement->bindParam(":contact_id", $contactId, PDO::PARAM_INT);
-    $statement->execute();
-}
+    $query = "UPDATE contacts SET contact_name = :contact_name, contact_email = :contact_email, contact_number = :contact_number, contact_image = :contact_image, dob = :dob, user_id = :user_id, gender_id = :gender_id, district_id = :district_id, blood_group_id = :blood_group_id, profession_id = :profession_id WHERE id = :id;";
 
-function updateContact(object|null $pdo, string $name, string $email, string $phone, string $address, string $age, string $dob, string $contactId)
-{
-    $query = "UPDATE contacts SET name = :name, phone_number = :phone_number, email = :email, address = :address, age = :age, dob = :dob WHERE id = :id;";
     $statement = $pdo->prepare($query);
-    $statement->bindParam(":name", $name);
-    $statement->bindParam(":phone_number", $phone);
-    $statement->bindParam(":email", $email);
-    $statement->bindParam(":address", $address);
-    $statement->bindParam(":age", $age);
+    $statement->bindParam(":contact_name", $contact_name);
+    $statement->bindParam(":contact_email", $contact_email);
+    $statement->bindParam(":contact_number", $contact_number);
+    $statement->bindParam(":contact_image", $contact_image);
     $statement->bindParam(":dob", $dob);
-    $statement->bindParam(":id", $contactId, PDO::PARAM_INT);
-    $statement->execute();
-}
-
-function updateGender(object|null $pdo, string $gender, string $contactId)
-{
-    $query = "UPDATE genders SET gender = :gender WHERE contact_id = :contact_id;";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":gender", $gender);
-    $statement->bindParam(":contact_id", $contactId, PDO::PARAM_INT);
-    $statement->execute();
-}
-
-function updateProfession(object|null $pdo, string $profession, string $contactId)
-{
-    $query = "UPDATE professions SET profession = :profession WHERE contact_id = :contact_id;";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":profession", $profession);
-    $statement->bindParam(":contact_id", $contactId, PDO::PARAM_INT);
-    $statement->execute();
-}
-
-function updateBloodGroup(object|null $pdo, string $bloodGroup, string $contactId)
-{
-    $query = "UPDATE blood_groups SET blood_group = :blood_group WHERE contact_id = :contact_id;";
-    $statement = $pdo->prepare($query);
-    $statement->bindParam(":blood_group", $bloodGroup);
-    $statement->bindParam(":contact_id", $contactId, PDO::PARAM_INT);
+    $statement->bindParam(":user_id", $user_id);
+    $statement->bindParam(":gender_id", $gender_id);
+    $statement->bindParam(":district_id", $district_id);
+    $statement->bindParam(":blood_group_id", $blood_group_id);
+    $statement->bindParam(":profession_id", $profession_id);
+    $statement->bindParam(":id", $contact_id);
     $statement->execute();
 }

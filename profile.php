@@ -12,7 +12,8 @@ if (!$isLoggedIn) {
 $name = $user["name"];
 $email = $user["email"];
 $displayname = explode(" ", trim($name))[0];
-$imageUrl = "uploads/users/" . $user_image
+$userImage = $user["avatar"];
+$isAvatarExist = isset($user["avatar"]);
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +28,7 @@ $imageUrl = "uploads/users/" . $user_image
     <title>Profile - Phone book app</title>
 </head>
 
-<body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
+<body class="min-w-full min-h-screen bg-neutral-200 text-neutral-700">
     <header class="flex justify-between items-center p-3">
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
@@ -35,9 +36,9 @@ $imageUrl = "uploads/users/" . $user_image
         <div>
             <?php
             if ($isLoggedIn) { ?>
-                <?php if (!empty($user_image)) { ?>
+                <?php if (!empty($isAvatarExist)) { ?>
                     <a href="profile.php?id=<?= $user_id ?>">
-                        <img class="rounded-full size-12" src="<?= $imageUrl ?>" alt="Avatar">
+                        <img class="rounded-full size-12" src="uploads/users/<?= $user["avatar"] ?>" alt="Avatar">
                     </a>
                 <?php } else { ?>
                     <div>
@@ -66,8 +67,8 @@ $imageUrl = "uploads/users/" . $user_image
         <div class="flex flex-col justify-center items-center mt-10">
             <div class="min-w-96 p-6 bg-white rounded-lg shadow-md">
                 <div class="mx-auto text-center">
-                    <?php if (!empty($user_image)) : ?>
-                        <img src="<?= $imageUrl ?>" alt="Avatar" class="rounded-full mx-auto size-36 object-cover">
+                    <?php if (!empty($isAvatarExist)) : ?>
+                        <img src="uploads/users/<?= $user["avatar"] ?>" alt="Avatar" class="rounded-full mx-auto size-36 object-cover">
                     <?php else : ?>
                         <div class="text-2xl">
                             <i class="fas fa-user-circle fa-5x"></i>

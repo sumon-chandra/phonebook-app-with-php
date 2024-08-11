@@ -3,11 +3,8 @@ require_once "includes/config-session.php";
 require_once "includes/users/user.php";
 
 
-$isLoggedIn = isset($_SESSION["email"]);
 $userId =  isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : "";
-$imageUrl = isset($userImage["image_url"]) ? $userImage["image_url"] : "";
-
-$imageUrl = "uploads/users/" . $user_image
+$isAvatarExist = isset($user["avatar"]);
 ?>
 
 <!DOCTYPE html>
@@ -22,17 +19,17 @@ $imageUrl = "uploads/users/" . $user_image
     <title>Phone book app</title>
 </head>
 
-<body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
+<body class="min-w-full min-h-screen bg-neutral-200 text-neutral-700">
     <header class="flex justify-between items-center p-3">
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
         </h4>
         <div>
             <?php
-            if ($isLoggedIn) { ?>
-                <?php if (!empty($user_image)) { ?>
-                    <a href="profile.php?id=<?= $user_id ?>">
-                        <img class="rounded-full size-12" src="<?= $imageUrl ?>" alt="Avatar">
+            if ($userId) { ?>
+                <?php if (!empty($isAvatarExist)) { ?>
+                    <a href="profile.php?id=<?= $userId ?>">
+                        <img class="rounded-full size-12" src="uploads/users/<?= $user["avatar"] ?>" alt="Avatar">
                     </a>
                 <?php } else { ?>
                     <div>

@@ -8,8 +8,8 @@ if (!$isLoggedIn) {
     die();
 }
 
-$userId =  $user_id;
-$imageUrl = "uploads/users/" . $user_image;
+
+$isAvatarExist = isset($user["avatar"]);
 $name = $user["name"];
 $displayname = explode(" ", trim($name))[0];
 ?>
@@ -26,7 +26,7 @@ $displayname = explode(" ", trim($name))[0];
     <title>Update Profile - Phone book app</title>
 </head>
 
-<body class="min-w-full min-h-screen bg-neutral-100 text-neutral-700">
+<body class="min-w-full min-h-screen bg-neutral-200 text-neutral-700">
     <header class="flex justify-between items-center p-3">
         <h4 class="text-center text-xl font-bold">
             <a href="index.php">Phone Book App</a>
@@ -34,15 +34,13 @@ $displayname = explode(" ", trim($name))[0];
         <div>
             <?php
             if ($isLoggedIn) { ?>
-                <?php if ($imageUrl) { ?>
-                    <a href="profile.php?id=<?= $userId ?>">
-                        <img class="rounded-full size-12" src="<?= $imageUrl ?>" alt="Avatar">
+                <?php if (!empty($isAvatarExist)) { ?>
+                    <a href="profile.php?id=<?= $user_id ?>">
+                        <img class="rounded-full size-12" src="uploads/users/<?= $user["avatar"] ?>" alt="Avatar">
                     </a>
                 <?php } else { ?>
                     <div>
-                        <a href="profile.php?id=<?= $userId ?>">
-                            <i class="fas fa-user-circle fa-2x"></i>
-                        </a>
+                        <span class="text-lg font-semibold"><span class="font-light">Logged in as</span> <?= $_SESSION["email"]; ?></span>
                     </div>
                 <?php } ?>
             <?php } else { ?>
@@ -72,7 +70,7 @@ $displayname = explode(" ", trim($name))[0];
                     <div class="mb-4 flex flex-col gap-3">
                         <label for="image" class="block text-gray-700 text-sm font-bold mb-2">User image</label>
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/webp, image/jpg">
-                        <small class="text-gray-600">Only .png, .jpg, .jpeg, .webp images are allowed!</small>
+                        <small class="text-gray-500">Only .png, .jpg, .jpeg, .webp images are allowed!</small>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <button type="submit" class="bg-blue-600 text-white font-semibold px-4 py-2 rounded hover:bg-blue-500 transition-colors duration-200">

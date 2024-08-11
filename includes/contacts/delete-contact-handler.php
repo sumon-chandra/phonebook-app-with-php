@@ -13,14 +13,10 @@ require_once "contact-view.php";
 require_once "contact-contr.php";
 
 try {
-    $contactId = isset($_GET["id"]) ? $_GET["id"] : "";
+    $contactId = isset($_GET["contact_id"]) ? $_GET["contact_id"] : "";
 
     if ($contactId) {
         deleteContact($pdo, $contactId);
-        deleteGender($pdo, $contactId);
-        deleteBloodGroup($pdo, $contactId);
-        deleteProfession($pdo, $contactId);
-        deleteContactImage($pdo, $contactId);
     }
 
     header("Location: ../../contacts.php");

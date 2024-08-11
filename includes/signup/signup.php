@@ -4,6 +4,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $pwd = $_POST['password'];
+    $image_name = $_FILES['image']['name'];
+    $avatar = "";
 
     try {
         require_once "../db.php";
@@ -30,27 +32,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die();
         }
 
+        // Hashed password
+        $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+        // Upload user image file
+        if ($image_name) {
+            $image_temp = $_FILES['image']['tmp_name'];
+            $allowed = ['jpg', 'png', 'jpeg', 'webp'];
+            $ext = pathinfo($image_name, PATHINFO_EXTENSION);
+            $image_url = "user_" . "_" . $image_name;
+            $target_path = "../../uploads/users/" . $image_url;
+            // echo "Uploading";
+
+            // Upload user image file
+            if (in_array($ext, $allowed)) {
+                $movedImage = move_uploaded_file($image_temp, $target_path);
+                if ($movedImage) {
+                    $avatar = $image_url;
+                }
+            };
+        }
+
         // Register the user
-        createUser($pdo, $name, $email, $pwd);
+        createUser($pdo, $name, $email, $hashed_pwd, $avatar);
 
-        // Get user_id
-        $user = getUser($pdo, $email);
-
-        // Upload user image file
-        $image_name = $_FILES['image']['name'];
-        $image_temp = $_FILES['image']['tmp_name'];
-        $allowed = ['jpg', 'png', 'jpeg'];
-        $ext = pathinfo($image_name, PATHINFO_EXTENSION);
-        $image_url = "user_" . $user["id"] . "_" . $image_name;
-        $target_path = "../../uploads/users/" . $image_url;
-
-        // Upload user image file
-        if (in_array($ext, $allowed)) {
-            $movedImage = move_uploaded_file($image_temp, $target_path);
-            if ($movedImage) {
-                uploadUserImage($pdo, $image_url, $user["id"]);
-            }
-        };
 
         $pdo = null;
         $statement = null;

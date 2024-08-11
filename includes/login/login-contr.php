@@ -29,11 +29,8 @@ function isEmailWrong(bool|array $user)
     }
 }
 
-function isPwdWrong(string $userPwd, string $password)
+function isPwdWrong(string $hashed_pwd, string $pwd)
 {
-    if ($userPwd != $password) {
-        return true;
-    } else {
-        return false;
-    }
+    $isCorrect = password_verify($pwd, $hashed_pwd);
+    return $isCorrect;
 }
